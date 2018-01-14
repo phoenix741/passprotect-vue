@@ -34,6 +34,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
+      'quasar': 'quasar-framework',
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('client')
     }

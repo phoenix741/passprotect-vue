@@ -1,29 +1,24 @@
 <template lang="pug">
-div
-  v-navigation-drawer(fixed,clipped,app,v-model="drawer")
-    v-list(dense)
-      v-list-tile.about-link(router=true,to="/about")
-        v-list-tile-action
-          v-icon chat_bubble
-        v-list-tile-content
-          v-list-tile-title {{ trans('app.menu.about') }}
-      v-list-tile.export-link(v-on:click.native="handleExport()")
-        v-list-tile-action
-          v-icon import_export
-        v-list-tile-content
-          v-list-tile-title {{ trans('app.menu.export') }}
-      v-divider
-      v-list-tile.logout-link(v-on:click.native="handleLogout()")
-        v-list-tile-action
-          v-icon power_settings_new
-        v-list-tile-content
-          v-list-tile-title {{ trans('app.menu.logout') }}
+q-layout(ref='layout',view='lHh Lpr fff',:left-class="{'bg-grey-2': true}")
+  q-toolbar.glossy(slot='header')
+    q-btn(flat,@click='$refs.layout.toggleLeft()')
+      q-icon(name='menu')
 
-  v-toolbar(color="primary",dark,app,clipped-left,fixed)
-    v-toolbar-title.ml-0.pl-3(:style="$vuetify.breakpoint.smAndUp ? 'width: 300px; min-width: 250px' : 'min-width: 72px'")
-      v-toolbar-side-icon(@click.stop="drawer = !drawer")
-      span.hidden-xs-only {{ trans('app.title') }}
-    v-text-field.search-input(light,solo,prepend-icon="search",:placeholder="trans('items:list.search')",v-on:input="search",style="max-width: 500px; min-width: 128px")
+    q-toolbar-title {{ trans('app.title') }}
+    q-search.glossy.primary.search-input(:debounce="500",:placeholder="trans('items:list.search')",v-on:input="search")
+
+
+  div(slot='left')
+    q-list(no-border,link,inset-delimiter)
+      q-item(router=true,to="/about")
+        q-item-side(icon="chat_bubble")
+        q-item-main(:label="trans('app.menu.about')")
+      q-item(@click="handleExport()")
+        q-item-side(icon="import_export")
+        q-item-main(:label="trans('app.menu.export')")
+      q-item(@click="handleLogout()")
+        q-item-side(icon="power_settings_new")
+        q-item-main(:label="trans('app.menu.logout')")
 
   v-content
     v-list#items-list(two-line)
@@ -73,6 +68,7 @@ div
 </template>
 
 <script type="text/babel">
+import {QLayout, QToolbar, QToolbarTitle, QBtn, QIcon, QList, QListHeader, QItem, QItemSide, QItemMain, QSearch} from 'quasar'
 import {SESSION, logout} from '../user/UserService'
 import {cardTypeMapping, removeLine, exportLinesAsCsv} from './ItemService'
 import getLines from './getLines.gql'
@@ -85,6 +81,17 @@ export default {
   mixins: [AnalyticsMixin],
   props: ['q'],
   components: {
+    QLayout,
+    QToolbar,
+    QToolbarTitle,
+    QBtn,
+    QIcon,
+    QList,
+    QListHeader,
+    QItem,
+    QItemSide,
+    QItemMain,
+    QSearch,
     'item-creation': ItemCreation
   },
   data () {
@@ -148,13 +155,13 @@ export default {
       line = line || {}
       return cardTypeMapping[line.type || 'text']
     }
-  },
+  },/*
   beforeRouteEnter (to, from, next) {
     if (!SESSION.authenticated) {
       return next('/login')
     }
     return next()
-  },
+  },*/
   apollo: {
     lines: {
       query: getLines,

@@ -1,8 +1,39 @@
 <template lang="pug">
-v-app
+div.q-app
   router-view
 </template>
 
 <style lang="stylus">
-	@import '../node_modules/vuetify/src/stylus/main'
+$primary   = #027be3
+$secondary = #26A69A
+$tertiary  = #555
+
+$neutral   = #E0E1E2
+$positive  = #21BA45
+$negative  = #DB2828
+$info      = #31CCEC
+$warning   = #F2C037
+
+$light     = #f4f4f4
+$dark      = #333
+$faded     = #777
+
+$text-color          = lighten(black, 17%)
+$background-color    = white
+
+$link-color          = lighten($primary, 25%)
+$link-color-active   = $primary
+
+$generic-border-radius      ?= 2px
+$generic-input-size         ?= 25px
+$generic-input-border-width ?= 2px
+
+$typography-font-family     ?= 'Roboto'
+
+$toolbar-color              ?= white
+$toolbar-background         ?= $primary
+$toolbar-active-color       ?= $primary
+$toolbar-faded-color        ?= composite-color($primary)
+
+@import '~quasar-framework/dist/quasar.mat.styl'
 </style>
