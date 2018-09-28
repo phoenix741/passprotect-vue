@@ -25,5 +25,5 @@ Vue.use(Vuetify, {
     VToolbar,
     transitions
   },
-  iconfont: 'md',
+  iconfont: 'md'
 })
