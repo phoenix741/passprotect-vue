@@ -14,6 +14,27 @@
       <strong>We're sorry but passprotect doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+
+    <% if (VUE_APP_PIWIK_ENABLED) { %>
+      <!-- Piwik -->
+      <script type='text/javascript'>
+        var _paq = _paq || [];
+        (function() {
+        var u="<%= VUE_APP_PIWIK_SITE_URL %>";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', <%= VUE_APP_PIWIK_SITE_ID %>]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+      </script>
+
+      <noscript>
+        <p>
+          <img src="<%= VUE_APP_PIWIK_SITE_URL %>piwik.php?idsite=<%= VUE_APP_PIWIK_SITE_ID %>" style="border:0;" alt="">
+        </p>
+      </noscript>
+      <!-- End Piwik Code -->
+    <% } %>
     <!-- built files will be auto injected -->
   </body>
 </html>
