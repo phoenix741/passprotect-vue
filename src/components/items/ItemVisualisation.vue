@@ -29,7 +29,7 @@ div
           v-list-tile-title {{ $t('item.form.text.field') }}
           v-list-tile-sub-title#text-text {{ clearInformation.text }}
         v-list-tile-action
-          v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.text)") content_copy
+          v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.text)") content_copy
 
     template(v-if="line.type == 'card'")
       v-list(two-line)
@@ -46,7 +46,7 @@ div
             v-list-tile-title#name-on-card-text {{ clearInformation.nameOnCard }}
             v-list-tile-sub-title {{ $t('item.form.nameOnCard.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.nameOnCard)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.nameOnCard)") content_copy
         v-list-tile(v-if="clearInformation.cardNumber")
           v-list-tile-action
             v-icon.indigo--text
@@ -54,7 +54,7 @@ div
             v-list-tile-title#card-number-text {{ clearInformation.cardNumber }}
             v-list-tile-sub-title {{ $t('item.form.cardNumber.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.cardNumber)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.cardNumber)") content_copy
         v-list-tile(v-if="clearInformation.cvv")
           v-list-tile-action
             v-icon.indigo--text
@@ -62,7 +62,7 @@ div
             v-list-tile-title#cvv-text {{ clearInformation.cvv }}
             v-list-tile-sub-title {{ $t('item.form.cvv.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.cvv)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.cvv)") content_copy
         v-list-tile(v-if="clearInformation.code")
           v-list-tile-action
             v-icon.indigo--text
@@ -70,7 +70,7 @@ div
             v-list-tile-title#code-text {{ clearInformation.code }}
             v-list-tile-sub-title {{ $t('item.form.code.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.code)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.code)") content_copy
         v-list-tile(v-if="clearInformation.expiry")
           v-list-tile-action
             v-icon.indigo--text
@@ -78,7 +78,7 @@ div
             v-list-tile-title#expiry-text {{ clearInformation.expiry }}
             v-list-tile-sub-title {{ $t('item.form.expiry.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.expiry)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.expiry)") content_copy
 
       v-divider(inset)
       v-list(two-line)
@@ -98,7 +98,7 @@ div
             v-list-tile-title#username-text {{ clearInformation.username }}
             v-list-tile-sub-title {{ $t('item.form.username.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.username)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.username)") content_copy
 
         v-list-tile(v-if="clearInformation.password")
           v-list-tile-action
@@ -107,7 +107,7 @@ div
             v-list-tile-title#password-text {{ clearInformation.password }}
             v-list-tile-sub-title {{ $t('item.form.password.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.password)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.password)") content_copy
 
       v-divider(inset)
       v-list(two-line)
@@ -118,7 +118,7 @@ div
             v-list-tile-title#siteurl-text {{ clearInformation.siteUrl }}
             v-list-tile-sub-title {{ $t('item.form.siteUrl.field') }}
           v-list-tile-action
-            v-icon.copy-button(dark,v-on:click="copyToClipboard(clearInformation.siteUrl)") content_copy
+            v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.siteUrl)") content_copy
 
     v-divider(inset)
     v-list(three-line,v-if="clearInformation.notes")
@@ -155,6 +155,7 @@ export default {
   },
   methods: {
     copyToClipboard (label) {
+      console.log('copy to clipboard')
       copy(label)
     },
     async decryptClearInformation (val) {

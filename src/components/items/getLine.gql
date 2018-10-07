@@ -4,6 +4,7 @@ query getLineById($id: ID!) {
     type
     label
 		group
+    logo
     encryption {
       salt
       informations {

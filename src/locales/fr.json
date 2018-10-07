@@ -34,8 +34,13 @@
       },
 			"group": {
 				"field": "Groupe",
-				"new": "Groupe (nouveau)",
-        "newItem": "Nouveau groupe"
+        "newItem": "Nouveau groupe",
+        "dialog": {
+          "title": "Nouveau groupe",
+          "label": "Nom du groupe",
+          "cancel": "Annuler",
+          "ok": "Ajouter"
+        }
 			},
       "type": {
         "field": "Type de carte",
@@ -79,7 +84,7 @@
       },
       "button": {
         "field": "Sauvegarder",
-				"generate": "Générer le mot de passe"
+        "generate": "Générer le mot de passe"
       }
     }
   },

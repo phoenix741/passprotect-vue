@@ -25,10 +25,6 @@ export async function login (context, creds, redirect) {
     SESSION.clearKey = clearKey
     SESSION.authenticated = true
 
-    localStorage.setItem('jwtToken', SESSION.jwtToken)
-    localStorage.setItem('username', SESSION.username)
-    localStorage.setItem('clearKey', SESSION.clearKey)
-
     const [, token] = SESSION.jwtToken.split(' ')
 
     await onLogin(context.$apollo.provider.defaultClient, token)
@@ -67,21 +63,10 @@ export async function logout (context) {
   delete SESSION.jwtToken
   delete SESSION.clearKey
 
-  localStorage.removeItem('username')
-  localStorage.removeItem('jwtToken')
-  localStorage.removeItem('clearKey')
-
   await onLogout(context.$apollo.provider.defaultClient)
 
   context.$apollo.provider.defaultClient.resetStore()
   context.$router.push('/login')
-}
-
-export function checkAuth () {
-  SESSION.authenticated = !!localStorage.getItem('jwtToken')
-  SESSION.username = localStorage.getItem('username')
-  SESSION.jwtToken = localStorage.getItem('jwtToken')
-  SESSION.clearKey = localStorage.getItem('clearKey')
 }
 
 async function generateMasterKey (user, password) {

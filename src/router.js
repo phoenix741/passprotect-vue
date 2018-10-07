@@ -5,6 +5,9 @@ import Items from './components/items/Items.vue'
 import ItemModification from './components/items/ItemModification.vue'
 import ItemVisualisation from './components/items/ItemVisualisation.vue'
 import Login from './components/user/Login.vue'
+import About from './pages/About.vue'
+import Terms from './pages/Terms.vue'
+import Register from './components/user/Register.vue'
 
 Vue.use(Router)
 
@@ -18,15 +21,13 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './pages/About.vue')
+      // component: () => import(/* webpackChunkName: "about" */ './pages/About.vue')
+      component: About
     },
     {
       name: 'terms',
       path: '/terms',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './pages/Terms.vue')
+      component: Terms
     },
     {
       name: 'items',
@@ -54,7 +55,7 @@ export default new Router({
     {
       name: 'register',
       path: '/register',
-      component: () => import(/* webpackChunkName: "register" */ './components/user/Register.vue')
+      component: Register
     },
     {
       path: '*',

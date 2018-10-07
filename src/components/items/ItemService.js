@@ -24,6 +24,7 @@ export const cardTypeMapping = {
       cvv: '',
       expiry: '',
       code: '',
+      logo: '',
       notes: ''
     }
   },
@@ -36,6 +37,7 @@ export const cardTypeMapping = {
       username: '',
       password: '',
       siteUrl: '',
+      logo: '',
       notes: ''
     }
   },
@@ -46,6 +48,7 @@ export const cardTypeMapping = {
     fields: {
       group: '',
       text: '',
+      logo: '',
       notes: ''
     }
   }

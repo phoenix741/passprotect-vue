@@ -1,7 +1,7 @@
 <template lang="pug">
 v-card
   form(@submit.prevent="submit()")
-    v-toolbar(dark,color="primary")
+    v-toolbar(dark,color="primary",extended,extension-height="168px")
       v-btn(icon,@click.native="close()",dark)
         v-icon close
       v-toolbar-title#title-label {{ $t(cardType.label) }}
@@ -9,9 +9,23 @@ v-card
       v-toolbar-items
         v-btn#generate-password(v-if="lineToModify.type == 'password'",dark,flat,v-on:click.native="generatePassword()") {{ $t('item.form.button.generate') }}
         v-btn#detail-button(type="submit",dark,flat) {{ $t('item.form.button.field') }}
+      v-layout(align-center,justify-center,slot="extension")
+        upload-image(v-model="lineToModify.logo")
 
     v-container(grid-list-md)
       v-layout(wrap)
+        v-flex(xs12)
+          v-select(
+            :label="$t('item.form.group.field')",
+            :data-vv-as="$t('item.form.group.field')",
+            :items="groups",
+            v-model="lineToModify.group",
+            :error-messages="errors.collect('group')",
+            v-validate="'required'",
+            data-vv-name="group",
+            name="group",
+            required)
+
         v-flex(xs12)
           v-text-field#label-input(
             :label="$t('item.form.label.field')"
@@ -22,23 +36,6 @@ v-card
             data-vv-name="label",
             name="label",
             required)
-
-        v-flex(xs12)
-          v-select#group-select(
-            :label="$t('item.form.group.field')",
-            v-bind:items="selectGroups",
-            v-model="lineToModify.group",
-            item-text="name"
-            item-value="value")
-            template(slot="item",slot-scope="data")
-              template(v-if="data.item.value") {{ data.item.name }}
-              div.groupSelect(v-if="!data.item.value")
-                span#empty-item {{ data.item.name }}
-
-        v-flex(xs12,v-if="lineToModify.group === ''")
-          v-text-field#group-input(
-            :label="$t('item.form.group.new')"
-            v-model="newGroup")
 
         template(v-if="lineToModify.type == 'text'")
           v-flex(xs12)
@@ -112,17 +109,24 @@ v-card
             :label="$t('item.form.notes.field')",
             v-model="clearInformation.notes",
             auto-grow)
+  new-group(:show="newGroupDlg",@close="cancelAddGroup",@add="addGroup")
 </template>
 
 <script type="text/babel">
-import { pick, map, cloneDeep } from 'lodash'
+import { pick, cloneDeep } from 'lodash'
 import { cardTypeMapping, updateLine, decryptLine, encryptLine, generate } from './ItemService'
 import getGroups from './getGroups.gql'
+import NewGroupVue from './NewGroup.vue'
+import UploadImageVue from '../shared/UploadImage.vue'
 
 export default {
   $validates: true,
   props: ['line'],
   name: 'item-detail',
+  components: {
+    'new-group': NewGroupVue,
+    'upload-image': UploadImageVue
+  },
   data () {
     return {
       lineToModify: cloneDeep(this.line),
@@ -133,11 +137,17 @@ export default {
       clearInformation: {},
       typeOfCard: this.$t('item.form.type.options'),
       groups: [],
-      newGroup: ''
+      newGroupDlg: false
     }
   },
   apollo: {
-    groups: getGroups
+    groups: {
+      query: getGroups,
+      result ({ data }) {
+        // Create the dialog element used for reactivity. If not the dialog will not work
+        data.groups.push(this.$t('item.form.group.newItem'))
+      }
+    }
   },
   methods: {
     async submit () {
@@ -146,16 +156,22 @@ export default {
         return
       }
 
-      const line = pick(this.lineToModify, ['_id', 'type', 'label', 'group', '_rev'])
-
-      if (this.newGroup) {
-        line.group = this.newGroup
-      }
-
+      const line = pick(this.lineToModify, ['_id', 'type', 'label', 'group', 'logo', '_rev'])
       line.encryption = await encryptLine(this.clearInformation)
 
       await updateLine(this, line)
       this.close()
+    },
+    addGroup (newGroup) {
+      this.groups.splice(0, 0, newGroup)
+      this.lineToModify.group = newGroup
+
+      this.newGroupDlg = false
+    },
+    cancelAddGroup () {
+      this.lineToModify.group = null
+
+      this.newGroupDlg = false
     },
     async generatePassword () {
       this.clearInformation.password = await generate()
@@ -171,11 +187,6 @@ export default {
     }
   },
   computed: {
-    selectGroups () {
-      const result = map(this.groups, g => ({ name: g, value: g }))
-      result.push({ value: '', name: this.$t('item.form.group.newItem') })
-      return result
-    },
     cardType () {
       return cardTypeMapping[this.lineToModify.type || 'text']
     }
@@ -184,24 +195,14 @@ export default {
     lineToModify: {
       immediate: true,
       async handler (val) {
-        this.decryptClearInformation(val)
+        await this.decryptClearInformation(val)
+      }
+    },
+    'lineToModify.group': function (val) {
+      if (val === this.$t('item.form.group.newItem')) {
+        this.newGroupDlg = true
       }
     }
   }
 }
 </script>
-
-<style>
-.groupSelect {
-  width:100%;
-  text-align:center;
-  border-bottom: 1px solid #000;
-  line-height:0.1em;
-  margin:10px 0 20px;
-}
-
-.groupSelect span {
-  background:#fff;
-  padding:0 10px;
-}
-</style>

@@ -5,13 +5,11 @@ import './plugins/vuetify'
 import router from './router'
 import './registerServiceWorker'
 import { createProvider } from './plugins/vue-apollo'
-import { checkAuth } from './components/user/UserService'
 import App from './App.vue'
 import i18n from './plugins/i18n'
 
 (async function () {
   await veeValidate()
-  checkAuth()
 
   Vue.config.productionTip = false
 
