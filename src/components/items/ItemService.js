@@ -8,8 +8,6 @@ import removeLineQuery from './removeLine.gql'
 import getLines from './getLines.gql'
 import getGroups from './getGroups.gql'
 import getLinesWithDetail from './getLinesWithDetail.gql'
-import downloadAsFile from 'download-as-file'
-import json2csv from 'json2csv'
 
 export const cardTypeMapping = {
   card: {
@@ -164,10 +162,13 @@ export async function generate () {
 }
 
 export async function exportLinesAsCsv (context) {
-  const data = await exportLines(context)
-  const csv = json2csv.parse(data)
+  const json2csv = import(/* webpackChunkName: "csv" */ 'json2csv')
+  const downloadAsFile = import(/* webpackChunkName: "csv" */ 'download-as-file')
 
-  return downloadAsFile({ data: csv, filename: 'password.csv' })
+  const data = await exportLines(context)
+  const csv = (await json2csv).parse(data)
+
+  return (await downloadAsFile)({ data: csv, filename: 'password.csv' })
 }
 
 export async function exportLines (context) {

@@ -1,14 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Items from './components/items/Items.vue'
-import ItemModification from './components/items/ItemModification.vue'
-import ItemVisualisation from './components/items/ItemVisualisation.vue'
-import Login from './components/user/Login.vue'
-import About from './pages/About.vue'
-import Terms from './pages/Terms.vue'
-import Register from './components/user/Register.vue'
-
 Vue.use(Router)
 
 export default new Router({
@@ -21,41 +13,40 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      // component: () => import(/* webpackChunkName: "about" */ './pages/About.vue')
-      component: About
+      component: () => import(/* webpackChunkName: "about" */ './pages/About.vue')
     },
     {
       name: 'terms',
       path: '/terms',
-      component: Terms
+      component: () => import(/* webpackChunkName: "terms" */ './pages/Terms.vue')
     },
     {
       name: 'items',
       path: '/items',
-      component: Items,
+      component: () => import(/* webpackChunkName: "items" */ './components/items/Items.vue'),
       props: route => ({ q: route.query.q })
-    },
-    {
-      name: 'edit',
-      path: '/items/:id/edit',
-      component: ItemModification,
-      props: true
     },
     {
       name: 'view',
       path: '/items/:id',
-      component: ItemVisualisation,
+      component: () => import(/* webpackChunkName: "items" */ './components/items/ItemVisualisation.vue'),
+      props: true
+    },
+    {
+      name: 'edit',
+      path: '/items/:id/edit',
+      component: () => import(/* webpackChunkName: "edit" */ './components/items/ItemModification.vue'),
       props: true
     },
     {
       name: 'login',
       path: '/login',
-      component: Login
+      component: () => import(/* webpackChunkName: "login" */ './components/user/Login.vue')
     },
     {
       name: 'register',
       path: '/register',
-      component: Register
+      component: () => import(/* webpackChunkName: "register" */ './components/user/Register.vue')
     },
     {
       path: '*',
