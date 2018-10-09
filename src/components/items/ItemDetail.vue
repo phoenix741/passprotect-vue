@@ -113,7 +113,7 @@ v-card
 </template>
 
 <script type="text/babel">
-import { pick, cloneDeep } from 'lodash'
+import { pick, cloneDeep } from '../../utils/lodash'
 import { cardTypeMapping, updateLine, decryptLine, encryptLine, generate } from './ItemService'
 import getGroups from './getGroups.gql'
 import NewGroupVue from './NewGroup.vue'

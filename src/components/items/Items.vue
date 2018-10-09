@@ -66,7 +66,7 @@ div
 import { SESSION, logout } from '../user/UserService'
 import { cardTypeMapping, removeLine, exportLinesAsCsv } from './ItemService'
 import getLines from './getLines.gql'
-import { flow, filter, groupBy, size, debounce, sortBy } from 'lodash'
+import { debounce } from '../../utils/lodash'
 import AnalyticsMixin from '../../utils/piwik'
 import ItemCreation from './ItemCreation'
 
@@ -93,14 +93,22 @@ export default {
   computed: {
     linesByGroup () {
       const searchFilter = !!this.q && new RegExp(this.q)
-      return flow(
-        list => filter(this.lines, line => !searchFilter || searchFilter.test(line.label) || searchFilter.test(line.group)),
-        list => sortBy(list, ['group', 'label']),
-        list => groupBy(list, 'group')
-      )(this.lines)
+      return this.lines
+        .filter(line => !searchFilter || searchFilter.test(line.label) || searchFilter.test(line.group))
+        .sort((l1, l2) => {
+          const result = l1.group.localeCompare(l2.group)
+          if (result === 0) {
+            return l1.label.localeCompare(l2.label)
+          }
+          return result
+        })
+        .reduce((acc, line) => {
+          acc[line.group] = acc[line.group] || []
+          acc[line.group].push(line)
+        }, {})
     },
     groupCount () {
-      return size(this.linesByGroup)
+      return Object.keys(this.linesByGroup || {}).length
     }
   },
   methods: {

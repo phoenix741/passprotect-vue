@@ -2,7 +2,8 @@ import config from '../../config.yml'
 import { SESSION } from '../user/UserService'
 import { createKeyDerivation, decrypt, encrypt, generateIV, generatePassword } from '../../utils/crypto'
 import { parseErrors } from '../../utils/errors'
-import { merge, find, remove, pick, clone } from 'lodash'
+import { pick } from '../../utils/lodash'
+import deepmerge from 'deepmerge'
 import createUpdateLine from './createUpdateLine.gql'
 import removeLineQuery from './removeLine.gql'
 import getLines from './getLines.gql'
@@ -60,7 +61,7 @@ export async function updateLine (context, line) {
       update (store, { data: { createUpdateLine } }) {
         try {
           const data = store.readQuery({ query: getLines })
-          if (!find(data.lines, line => line._id === createUpdateLine._id)) {
+          if (!data.lines.find(line => line._id === createUpdateLine._id)) {
             data.lines.push(createUpdateLine)
             store.writeQuery({ query: getLines, data })
           }
@@ -70,7 +71,7 @@ export async function updateLine (context, line) {
 
         try {
           const dataGroup = store.readQuery({ query: getGroups })
-          if (!find(dataGroup.groups, group => group === createUpdateLine.group)) {
+          if (!dataGroup.groups.find(group => group === createUpdateLine.group)) {
             dataGroup.groups.push(createUpdateLine.group)
             store.writeQuery({ query: getGroups, dataGroup })
           }
@@ -80,7 +81,7 @@ export async function updateLine (context, line) {
       },
       optimisticResponse: {
         __typename: 'Mutation',
-        createUpdateLine: merge({
+        createUpdateLine: deepmerge({
           __typename: 'WalletLine',
           updatedAt: (new Date()).getTime(),
           _id: null,
@@ -110,7 +111,7 @@ export async function removeLine (context, lineId) {
         try {
           const data = store.readQuery({ query: getLines })
           if (!removeLine.errors || !removeLine.errors.length) {
-            remove(data.lines, line => line._id === lineId)
+            data.lines = data.lines.filter(line => line._id !== lineId)
             store.writeQuery({ query: getLines, data })
           }
         } catch (err) {
@@ -175,10 +176,10 @@ export async function exportLines (context) {
   const { data: { lines } } = await context.$apollo.query({ query: getLinesWithDetail })
 
   return Promise.all(lines.map(async line => {
-    const copy = clone(line)
+    const copy = Object.assign({}, line)
     copy.decryptedContent = await decryptLine(copy)
 
-    return merge(
+    return Object.assign({},
       pick(copy, ['label']),
       pick(copy.decryptedContent, ['username', 'password', 'siteUrl', 'notes']),
       pick(copy.decryptedContent, ['type', 'nameOnCard', 'cardNumber', 'cvv', 'expiry', 'code', 'notes']),
@@ -189,5 +190,5 @@ export async function exportLines (context) {
 
 function completeFields (type, clearInformation) {
   const fields = cardTypeMapping[type].fields
-  return merge({}, fields, clearInformation)
+  return Object.assign({}, fields, clearInformation)
 }
