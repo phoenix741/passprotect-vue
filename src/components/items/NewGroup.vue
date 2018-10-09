@@ -14,10 +14,10 @@ v-dialog(v-model="show",max-width="500px")
           name="newGroup",
           required
       )
-  v-card-actions
-      v-spacer
-      v-btn(color="primary",flat,@click="close") {{ $t('item.form.group.dialog.cancel') }}
-      v-btn(color="primary",flat,@click="addGroup") {{ $t('item.form.group.dialog.ok') }}
+    v-card-actions
+        v-spacer
+        v-btn(color="primary",flat,@click="close") {{ $t('item.form.group.dialog.cancel') }}
+        v-btn(color="primary",flat,@click="addGroup") {{ $t('item.form.group.dialog.ok') }}
 </template>
 
 <script type="text/babel">

@@ -1,7 +1,7 @@
 <template lang="pug">
 v-card
   form(@submit.prevent="submit()")
-    v-toolbar(dark,color="primary",extended,extension-height="168px")
+    v-toolbar(dark,color="primary")
       v-btn(icon,@click.native="close()",dark)
         v-icon close
       v-toolbar-title#title-label {{ $t(cardType.label) }}
@@ -9,8 +9,8 @@ v-card
       v-toolbar-items
         v-btn#generate-password(v-if="lineToModify.type == 'password'",dark,flat,v-on:click.native="generatePassword()") {{ $t('item.form.button.generate') }}
         v-btn#detail-button(type="submit",dark,flat) {{ $t('item.form.button.field') }}
-      v-layout(align-center,justify-center,slot="extension")
-        upload-image(v-model="lineToModify.logo")
+    v-layout.image(align-center,justify-center)
+      upload-image(v-model="lineToModify.logo")
 
     v-container(grid-list-md)
       v-layout(wrap)
@@ -206,3 +206,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.image {
+  height: 168px;
+  padding: 9px;
+}
+</style>

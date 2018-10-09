@@ -96,7 +96,7 @@ export default {
       return flow(
         list => filter(this.lines, line => !searchFilter || searchFilter.test(line.label) || searchFilter.test(line.group)),
         list => sortBy(list, ['group', 'label']),
-        list => groupBy(list, 'group'),
+        list => groupBy(list, 'group')
       )(this.lines)
     },
     groupCount () {
@@ -110,8 +110,8 @@ export default {
     handleExport () {
       exportLinesAsCsv(this)
     },
-    search: debounce(function (value) { 
-      this.$router.push(`/items?q=${value}`) 
+    search: debounce(function (value) {
+      this.$router.push(`/items?q=${value}`)
     }, 500),
     remove (line) {
       this.dialog['remove' + line._id] = false
