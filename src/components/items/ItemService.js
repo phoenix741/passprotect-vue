@@ -59,6 +59,7 @@ export async function updateLine (context, line) {
       mutation: createUpdateLine,
       variables: { input: line },
       update (store, { data: { createUpdateLine } }) {
+        console.log(createUpdateLine)
         try {
           const data = store.readQuery({ query: getLines })
           if (!data.lines.find(line => line._id === createUpdateLine._id)) {
@@ -67,6 +68,7 @@ export async function updateLine (context, line) {
           }
         } catch (err) {
           // Store getLines doesn't exists.
+          console.log(err)
         }
 
         try {
@@ -77,6 +79,7 @@ export async function updateLine (context, line) {
           }
         } catch (err) {
           // Store getGroups doesn't exists.
+          console.log(err)
         }
       },
       optimisticResponse: {

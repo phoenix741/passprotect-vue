@@ -22,8 +22,9 @@ div
         v-subheader.group-title(v-text="title")
         template(v-for="(line, index) in lines")
           v-list-tile(:key="line._id",v-on:click="showDetail(line, $event)",avatar)
-            v-list-tile-avatar
-              v-icon.white--text(:class="cardType(line).color") {{ cardType(line).icon }}
+            v-list-tile-action.avatar
+              v-icon.white--text(v-if="!line.logo",:class="cardType(line).color") {{ cardType(line).icon }}
+              img(v-else="!!line.logo",:src="'data:text/plain;base64,' + line.logo")
             v-list-tile-content
               v-list-tile-title.line-title {{ line.label }}
             v-list-tile-action
@@ -47,19 +48,12 @@ div
         v-btn#items-add-button.red.darken-2(slot="activator",dark,fab,hover)
           v-icon add
           v-icon close
-        v-btn#items-add-card-button.red(fab,dark,small,@click="dialog.card = true")
+        v-btn#items-add-card-button.red(fab,dark,small,to="/items/card/new")
           v-icon credit_card
-        v-btn#items-add-password-button.blue(fab,dark,small,@click="dialog.password = true")
+        v-btn#items-add-password-button.blue(fab,dark,small,to="/items/password/new")
           v-icon fingerprint
-        v-btn#items-add-text-button.green(fab,dark,small,@click="dialog.text = true")
+        v-btn#items-add-text-button.green(fab,dark,small,to="/items/text/new")
           v-icon text_fields
-
-      v-dialog(v-model="dialog.card",fullscreen,transition="dialog-bottom-transition",:overlay="false")
-        item-creation(v-if="dialog.card",type="card",@close="dialog.card = false")
-      v-dialog(v-model="dialog.password",fullscreen,transition="dialog-bottom-transition",:overlay="false")
-        item-creation(v-if="dialog.password",type="password",@close="dialog.password = false")
-      v-dialog(v-model="dialog.text",fullscreen,transition="dialog-bottom-transition",:overlay="false")
-        item-creation(v-if="dialog.text",type="text",@close="dialog.text = false")
 </template>
 
 <script type="text/babel">
@@ -82,11 +76,7 @@ export default {
       title: this.$t('list.title'),
       showOptions: false,
       drawer: true,
-      dialog: {
-        card: false,
-        password: false,
-        text: false
-      },
+      dialog: {},
       lines: []
     }
   },
@@ -105,6 +95,7 @@ export default {
         .reduce((acc, line) => {
           acc[line.group] = acc[line.group] || []
           acc[line.group].push(line)
+          return acc
         }, {})
     },
     groupCount () {
@@ -164,3 +155,12 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.avatar
+  .v-icon, img
+    width: 50px
+    height: 30px
+    margin-right: 5px
+    border-radius: 5px
+</style>

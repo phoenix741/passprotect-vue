@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     close () {
-      this.$emit('close')
+      this.$router.push('/items/' + this.line._id)
     }
   },
   beforeRouteEnter (to, from, next) {

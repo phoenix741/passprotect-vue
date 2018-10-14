@@ -9,8 +9,15 @@ v-card
       v-toolbar-items
         v-btn#generate-password(v-if="lineToModify.type == 'password'",dark,flat,v-on:click.native="generatePassword()") {{ $t('item.form.button.generate') }}
         v-btn#detail-button(type="submit",dark,flat) {{ $t('item.form.button.field') }}
-    v-layout.image(align-center,justify-center)
-      upload-image(v-model="lineToModify.logo")
+      v-menu(bottom,right,offset-y)
+        v-btn#menu(slot="activator",dark,icon)
+          v-icon more_vert
+        v-list
+          upload-image(v-model="lineToModify.logo") {{ $t('item.form.button.addpicture') }}
+          v-list-tile#clear-image(v-on:click="lineToModify.logo = null")
+            v-list-tile-title {{ $t('item.form.button.clearpicture') }}
+    v-layout.image(v-if="!!src",align-center,justify-center)
+      img(:src="src")
 
     v-container(grid-list-md)
       v-layout(wrap)
@@ -189,6 +196,9 @@ export default {
   computed: {
     cardType () {
       return cardTypeMapping[this.lineToModify.type || 'text']
+    },
+    src() {
+      return this.lineToModify && this.lineToModify.logo && 'data:text/plain;base64,' + this.lineToModify.logo
     }
   },
   watch: {
@@ -207,9 +217,7 @@ export default {
 }
 </script>
 
-<style>
-.image {
-  height: 168px;
-  padding: 9px;
-}
+<style scoped lang="stylus">
+img
+  max-height: 150px
 </style>

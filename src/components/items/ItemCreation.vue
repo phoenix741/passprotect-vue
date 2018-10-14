@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     close () {
-      this.$emit('close')
+      this.$router.push('/items')
     }
   },
   beforeRouteEnter (to, from, next) {

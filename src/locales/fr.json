@@ -84,7 +84,9 @@
       },
       "button": {
         "field": "Sauvegarder",
-        "generate": "Générer le mot de passe"
+        "generate": "Générer le mot de passe",
+        "addpicture": "Ajouter une image",
+        "clearpicture": "Effacer l'image"
       }
     }
   },

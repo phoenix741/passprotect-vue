@@ -24,6 +24,7 @@ const cache = new InMemoryCache({ fragmentMatcher })
 
 // Config
 const defaultOptions = {
+  connectToDevTools: true,
   // You can use `https` for secure connection (recommended in production)
   httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)

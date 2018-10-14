@@ -79,7 +79,9 @@
       },
       "button": {
         "field": "Save",
-				"generate": "Generate a password"
+				"generate": "Generate a password",
+        "addpicture": "Add a picture",
+        "clearpicture": "Clear the picture"
       }
     }
   },

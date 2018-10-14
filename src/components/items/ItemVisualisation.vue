@@ -3,15 +3,12 @@ div
   v-toolbar(color="primary",dark,app)
     v-btn(icon,exact,router=true,to="/items")
       v-icon arrow_back
-    v-toolbar-title.ml-0.pl-3(:style="$vuetify.breakpoint.smAndUp ? 'width: 300px; min-width: 250px' : 'min-width: 72px'")
+    v-toolbar-title.ml-0.pl-3
       span#title-label {{ $t(cardType.label) }}
-    v-spacer
-    v-dialog(v-model="editDialog",fullscreen,transition="dialog-bottom-transition",:overlay="false")
-      v-btn#edit-button.white--text(icon,slot="activator")
-        v-icon mode_edit
-      item-modification(v-if="line._id",:id="line._id",@close="editDialog = false")
-
   v-content
+    v-layout.image(v-if="!!src",align-center,justify-center) 
+      img(:src="src")
+
     v-list(two-line)
       v-list-tile
         v-list-tile-action
@@ -128,6 +125,9 @@ div
         v-list-tile-content
           v-list-tile-title {{ $t('item.form.notes.field') }}
           v-list-tile-sub-title#notes-text {{ clearInformation.notes }}
+
+    v-btn.red.darken-2(dark,fab,fixed,bottom,right,:to="'/items/' + line._id + '/edit'")
+      v-icon mode_edit
 </template>
 
 <script type="text/babel">
@@ -150,9 +150,6 @@ export default {
       editDialog: false
     }
   },
-  components: {
-    'item-modification': ItemModification
-  },
   methods: {
     copyToClipboard (label) {
       console.log('copy to clipboard')
@@ -171,6 +168,9 @@ export default {
   computed: {
     cardType () {
       return cardTypeMapping[this.line.type || 'text']
+    },
+    src() {
+      return this.line && this.line.logo && 'data:text/plain;base64,' + this.line.logo
     }
   },
   watch: {
@@ -190,3 +190,8 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+img
+  max-height: 150px
+</style>

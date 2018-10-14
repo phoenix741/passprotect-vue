@@ -4,5 +4,6 @@ query getLines {
     type
     label
 		group
+    logo
   }
 }

@@ -39,6 +39,12 @@ export default new Router({
       props: true
     },
     {
+      name: 'new',
+      path: '/items/:type/new',
+      component: () => import(/* webpackChunkName: "new" */ './components/items/ItemCreation.vue'),
+      props: true
+    },
+    {
       name: 'login',
       path: '/login',
       component: () => import(/* webpackChunkName: "login" */ './components/user/Login.vue')
