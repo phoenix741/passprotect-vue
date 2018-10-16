@@ -6,7 +6,7 @@ div
     v-toolbar-title.ml-0.pl-3
       span#title-label {{ $t(cardType.label) }}
   v-content
-    v-layout.image(v-if="!!src",align-center,justify-center) 
+    v-layout.image(v-if="!!src",align-center,justify-center)
       img(:src="src")
 
     v-list(two-line)
@@ -136,7 +136,6 @@ import { SESSION } from '../user/UserService'
 import getLine from './getLine.gql'
 import AnalyticsMixin from '../../utils/piwik'
 import { cardTypeMapping, decryptLine } from './ItemService'
-import ItemModification from './ItemModification'
 
 export default {
   props: ['id'],
@@ -169,7 +168,7 @@ export default {
     cardType () {
       return cardTypeMapping[this.line.type || 'text']
     },
-    src() {
+    src () {
       return this.line && this.line.logo && 'data:text/plain;base64,' + this.line.logo
     }
   },

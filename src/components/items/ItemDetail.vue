@@ -104,7 +104,11 @@ v-card
               :append-icon="passwordVisibility ? 'visibility' : 'visibility_off'"
               @click:append="() => (passwordVisibility = !passwordVisibility)"
               :type="passwordVisibility ? 'text' : 'password'"
-              v-model="clearInformation.password")
+              v-model="clearInformation.password"
+              :persistent-hint="true"
+              :hint="zxcvbn.feedback.warning"
+              loading)
+              v-progress-linear(slot="progress",:value="zxcvbnProgress",:color="zxcvbnColor",height="3")
 
           v-flex(xs12)
             v-text-field#siteurl-input(
@@ -125,6 +129,7 @@ import { cardTypeMapping, updateLine, decryptLine, encryptLine, generate } from 
 import getGroups from './getGroups.gql'
 import NewGroupVue from './NewGroup.vue'
 import UploadImageVue from '../shared/UploadImage.vue'
+import zxcvbn from 'zxcvbn'
 
 export default {
   $validates: true,
@@ -197,8 +202,17 @@ export default {
     cardType () {
       return cardTypeMapping[this.lineToModify.type || 'text']
     },
-    src() {
+    src () {
       return this.lineToModify && this.lineToModify.logo && 'data:text/plain;base64,' + this.lineToModify.logo
+    },
+    zxcvbn () {
+      return zxcvbn(this.clearInformation.password)
+    },
+    zxcvbnProgress () {
+      return this.zxcvbn.score * 25
+    },
+    zxcvbnColor () {
+      return ['red accent-2', 'orange', 'amber', 'light-green ', 'green'][this.zxcvbn.score]
     }
   },
   watch: {
