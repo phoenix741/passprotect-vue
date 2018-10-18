@@ -206,7 +206,7 @@ export default {
       return this.lineToModify && this.lineToModify.logo && 'data:text/plain;base64,' + this.lineToModify.logo
     },
     zxcvbn () {
-      return zxcvbn(this.clearInformation.password)
+      return this.clearInformation.password && zxcvbn(this.clearInformation.password, [this.clearInformation.username, this.clearInformation.siteUrl, this.lineToModify.group, this.lineToModify.label].filter(e => !!e)) || { feedback: {} }
     },
     zxcvbnProgress () {
       return this.zxcvbn.score * 25

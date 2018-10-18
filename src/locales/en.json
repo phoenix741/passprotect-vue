@@ -68,6 +68,9 @@
       "password": {
         "field": "Password"
       },
+      "passwordXzcvbn": {
+        "field": "Password security"
+      },
       "siteUrl": {
         "field": "Website"
       },

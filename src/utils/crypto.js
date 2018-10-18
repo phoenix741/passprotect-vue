@@ -5,7 +5,13 @@ import { promisify } from 'es6-promisify'
 const pbkdf2 = promisify(crypto.pbkdf2)
 const randomBytes = promisify(crypto.randomBytes)
 
-const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+const CHARS = {
+  lowercase: 'abcdefghijklmnopqrstuvwxyz',
+  uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  numbers: '0123456789',
+  symbols: '!@#$%^&*()+_-=}{[]|:;"/?.><,`~',
+  similarCharacters: /[ilLI|`oO0]/g
+}
 
 export async function createKeyDerivation (password, salt, options) {
   const iterations = options.iterations
@@ -28,10 +34,22 @@ export async function generateKey (size) {
   return Buffer.from(iv).toString('hex')
 }
 
-export async function generatePassword (size) {
+export async function generatePassword (size, options = { uppercase: true, numbers: true, excludeSimilarCharacters: true }) {
   const len = size / 8
-
   const generatedChars = await randomBytes(len)
+  let chars = CHARS.lowercase
+  if (options.uppercase) {
+    chars += CHARS.uppercase
+  }
+  if (options.numbers) {
+    chars += CHARS.numbers
+  }
+  if (options.symbols) {
+    chars += CHARS.symbols
+  }
+  if (options.excludeSimilarCharacters) {
+    chars = chars.replace(CHARS.similarCharacters, '')
+  }
 
   const password = new Array(len)
   for (let i = 0; i < len; i++) {

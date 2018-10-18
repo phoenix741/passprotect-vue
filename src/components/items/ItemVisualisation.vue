@@ -77,9 +77,9 @@ div
           v-list-tile-action
             v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.expiry)") content_copy
 
-      v-divider(inset)
-      v-list(two-line)
-        v-list-tile(v-if="clearInformation.code")
+      v-divider(inset,v-if="clearInformation.code")
+      v-list(two-line,v-if="clearInformation.code")
+        v-list-tile
           v-list-tile-action
             v-icon.indigo--text vpn_key
           v-list-tile-content
@@ -106,9 +106,16 @@ div
           v-list-tile-action
             v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.password)") content_copy
 
-      v-divider(inset)
-      v-list(two-line)
-        v-list-tile(v-if="clearInformation.siteUrl")
+        v-list-tile(v-if="clearInformation.password")
+          v-list-tile-action
+            v-icon.indigo--text
+          v-list-tile-content
+            v-list-tile-title#security-password-text 
+              v-progress-linear(:value="zxcvbnProgress",:color="zxcvbnColor")
+
+      v-divider(inset,v-if="clearInformation.siteUrl")
+      v-list(two-line,v-if="clearInformation.siteUrl")
+        v-list-tile
           v-list-tile-action
             v-icon.indigo--text web
           v-list-tile-content
@@ -117,7 +124,7 @@ div
           v-list-tile-action
             v-icon.copy-button(v-on:click="copyToClipboard(clearInformation.siteUrl)") content_copy
 
-    v-divider(inset)
+    v-divider(inset,v-if="clearInformation.notes")
     v-list(three-line,v-if="clearInformation.notes")
       v-list-tile
         v-list-tile-action
@@ -136,6 +143,7 @@ import { SESSION } from '../user/UserService'
 import getLine from './getLine.gql'
 import AnalyticsMixin from '../../utils/piwik'
 import { cardTypeMapping, decryptLine } from './ItemService'
+import zxcvbn from 'zxcvbn'
 
 export default {
   props: ['id'],
@@ -170,6 +178,16 @@ export default {
     },
     src () {
       return this.line && this.line.logo && 'data:text/plain;base64,' + this.line.logo
+    },
+    zxcvbn () {
+      console.log(this.clearInformation.password)
+      return this.clearInformation.password && zxcvbn(this.clearInformation.password, [this.clearInformation.username, this.clearInformation.siteUrl, this.line.group, this.line.label].filter(e => !!e)) || { feedback: {} }
+    },
+    zxcvbnProgress () {
+      return this.zxcvbn.score * 25
+    },
+    zxcvbnColor () {
+      return ['red accent-2', 'orange', 'amber', 'light-green ', 'green'][this.zxcvbn.score]
     }
   },
   watch: {

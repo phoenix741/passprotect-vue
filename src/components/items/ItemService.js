@@ -59,7 +59,6 @@ export async function updateLine (context, line) {
       mutation: createUpdateLine,
       variables: { input: line },
       update (store, { data: { createUpdateLine } }) {
-        console.log(createUpdateLine)
         try {
           const data = store.readQuery({ query: getLines })
           if (!data.lines.find(line => line._id === createUpdateLine._id)) {

@@ -73,6 +73,9 @@
       "password": {
         "field": "Mot de passe"
       },
+      "passwordXzcvbn": {
+        "field": "Niveau de sécurité du mot de passe"
+      },
       "siteUrl": {
         "field": "Adresse du site"
       },
