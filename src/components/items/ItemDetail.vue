@@ -99,16 +99,11 @@ v-card
               v-model="clearInformation.username")
 
           v-flex(xs12)
-            v-text-field#password-input(
+            password-input#password-input(
               :label="$t('item.form.password.field')",
-              :append-icon="passwordVisibility ? 'visibility' : 'visibility_off'"
-              @click:append="() => (passwordVisibility = !passwordVisibility)"
-              :type="passwordVisibility ? 'text' : 'password'"
+              :words="passwordExcludedWords"
               v-model="clearInformation.password"
-              :persistent-hint="true"
-              :hint="zxcvbn.feedback.warning"
-              loading)
-              v-progress-linear(slot="progress",:value="zxcvbnProgress",:color="zxcvbnColor",height="3")
+            )
 
           v-flex(xs12)
             v-text-field#siteurl-input(
@@ -129,7 +124,7 @@ import { cardTypeMapping, updateLine, decryptLine, encryptLine, generate } from 
 import getGroups from './getGroups.gql'
 import NewGroupVue from './NewGroup.vue'
 import UploadImageVue from '../shared/UploadImage.vue'
-import zxcvbn from 'zxcvbn'
+import PasswordInput from '../shared/PasswordInput.vue'
 
 export default {
   $validates: true,
@@ -137,7 +132,8 @@ export default {
   name: 'item-detail',
   components: {
     'new-group': NewGroupVue,
-    'upload-image': UploadImageVue
+    'upload-image': UploadImageVue,
+    'password-input': PasswordInput
   },
   data () {
     return {
@@ -145,7 +141,6 @@ export default {
       cardNumberVisibility: false,
       cvvVisibility: false,
       codeVisibility: false,
-      passwordVisibility: false,
       clearInformation: {},
       typeOfCard: this.$t('item.form.type.options'),
       groups: [],
@@ -205,14 +200,8 @@ export default {
     src () {
       return this.lineToModify && this.lineToModify.logo && 'data:text/plain;base64,' + this.lineToModify.logo
     },
-    zxcvbn () {
-      return this.clearInformation.password && zxcvbn(this.clearInformation.password, [this.clearInformation.username, this.clearInformation.siteUrl, this.lineToModify.group, this.lineToModify.label].filter(e => !!e)) || { feedback: {} }
-    },
-    zxcvbnProgress () {
-      return this.zxcvbn.score * 25
-    },
-    zxcvbnColor () {
-      return ['red accent-2', 'orange', 'amber', 'light-green ', 'green'][this.zxcvbn.score]
+    passwordExcludedWords () {
+      return [this.clearInformation.username, this.clearInformation.siteUrl, this.lineToModify.group, this.lineToModify.label]
     }
   },
   watch: {

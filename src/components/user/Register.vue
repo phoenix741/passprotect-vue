@@ -14,17 +14,17 @@ div(style="width: 400px; margin: auto;")
           data-vv-name="username",
           name="username",
           required)
-        v-text-field.mt-3(
+        password-input.mt-3(
           ref="password"
           :label="$t('register.form.identity_password1.field')",
           :data-vv-as="$t('register.form.identity_password1.field')",
-          v-model="password",
-          type="password",
+          v-model="password"
           :error-messages="errors.collect('password')",
           v-validate="'required|min:8'",
           name="password",
           data-vv-name="password"
-          required)
+          required
+        )
         v-text-field.mt-3(
           :label="$t('register.form.identity_password2.field')",
           :data-vv-as="$t('register.form.identity_password2.field')",
@@ -53,11 +53,15 @@ div(style="width: 400px; margin: auto;")
 <script type="text/babel">
 import { signup } from './UserService'
 import AnalyticsMixin from '../../utils/piwik'
+import PasswordInput from '../shared/PasswordInput.vue'
 
 export default {
   $validates: true,
   name: 'register',
   mixins: [AnalyticsMixin],
+  components: {
+    'password-input': PasswordInput
+  },
   data () {
     return {
       title: this.$t('register.form.title'),

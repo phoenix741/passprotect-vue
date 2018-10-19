@@ -180,7 +180,6 @@ export default {
       return this.line && this.line.logo && 'data:text/plain;base64,' + this.line.logo
     },
     zxcvbn () {
-      console.log(this.clearInformation.password)
       return this.clearInformation.password && zxcvbn(this.clearInformation.password, [this.clearInformation.username, this.clearInformation.siteUrl, this.line.group, this.line.label].filter(e => !!e)) || { feedback: {} }
     },
     zxcvbnProgress () {
