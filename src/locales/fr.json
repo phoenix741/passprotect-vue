@@ -114,6 +114,9 @@
     "copyright": "Passprotect est un outil qui permet de stocker mot de passe, carte de crédit, et toutes autres informations de facon crypté.",
     "licence": "MIT Licence"
   },
+  "terms": {
+    "title": "Conditions générales d'utilisation"
+  },
   "login": {
     "dialog": {
       "title": "Se connecter à son compte",

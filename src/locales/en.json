@@ -109,6 +109,9 @@
     "copyright": "Passprotect is a tool used to store password, credit card, or any other information (encrypted).",
     "licence": "MIT Licence"
   },
+  "terms": {
+    "title": "Terms and condition"
+  },
   "login": {
     "dialog": {
       "title": "Sign in to your account",
