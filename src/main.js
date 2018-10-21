@@ -7,11 +7,17 @@ import './registerServiceWorker'
 import { createProvider } from './plugins/vue-apollo'
 import App from './App.vue'
 import i18n from './plugins/i18n'
+import VueCordova from 'vue-cordova'
 
 (async function () {
+  Vue.use(VueCordova)
   await veeValidate()
 
   Vue.config.productionTip = false
+
+  Vue.cordova.on('deviceready', () => {
+    navigator.splashscreen && navigator.splashscreen.hide()
+  })
 
   new Vue({
     apolloProvider: createProvider(),
