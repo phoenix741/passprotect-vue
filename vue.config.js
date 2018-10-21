@@ -17,7 +17,8 @@ module.exports = {
       fallbackLocale: 'en',
       localeDir: 'locales',
       enableInSFC: false
-    }
+    },
+    cordovaPath: 'src-cordova'
   },
 
   configureWebpack: config => {
@@ -40,5 +41,7 @@ module.exports = {
       .use('yaml-loader')
       .loader('yaml-loader')
       .end()
-  }
+  },
+
+  baseUrl: ''
 }

@@ -110,7 +110,7 @@ div
           v-list-tile-action
             v-icon.indigo--text
           v-list-tile-content
-            v-list-tile-title#security-password-text 
+            v-list-tile-title#security-password-text
               v-progress-linear(:value="zxcvbnProgress",:color="zxcvbnColor")
 
       v-divider(inset,v-if="clearInformation.siteUrl")
@@ -180,7 +180,7 @@ export default {
       return this.line && this.line.logo && 'data:text/plain;base64,' + this.line.logo
     },
     zxcvbn () {
-      return this.clearInformation.password && zxcvbn(this.clearInformation.password, [this.clearInformation.username, this.clearInformation.siteUrl, this.line.group, this.line.label].filter(e => !!e)) || { feedback: {} }
+      return (this.clearInformation.password && zxcvbn(this.clearInformation.password, [this.clearInformation.username, this.clearInformation.siteUrl, this.line.group, this.line.label].filter(e => !!e))) || { feedback: {} }
     },
     zxcvbnProgress () {
       return this.zxcvbn.score * 25

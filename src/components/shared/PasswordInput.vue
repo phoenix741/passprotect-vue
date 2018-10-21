@@ -23,14 +23,14 @@ import zxcvbn from 'zxcvbn'
 export default {
   props: {
     label: String,
-    value: { 
+    value: {
       type: String,
-      required: false 
+      required: false
     },
     words: {
       type: Array,
       default: () => [],
-      required: false 
+      required: false
     },
     required: {
       type: Boolean,
@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     zxcvbn () {
-      return this.value && zxcvbn(this.value, this.words.filter(e => !!e)) || { feedback: {} }
+      return (this.value && zxcvbn(this.value, this.words.filter(e => !!e))) || { feedback: {} }
     },
     zxcvbnProgress () {
       return this.zxcvbn.score * 25
