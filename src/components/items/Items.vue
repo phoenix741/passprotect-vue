@@ -57,8 +57,9 @@ div
 </template>
 
 <script type="text/babel">
+import Vue from 'vue'
 import { SESSION, logout } from '../user/UserService'
-import { cardTypeMapping, removeLine, exportLinesAsCsv } from './ItemService'
+import { cardTypeMapping, removeLine, saveLinesAsCsv, exportLinesAsCsv } from './ItemService'
 import getLines from './getLines.gql'
 import { debounce } from '../../utils/lodash'
 import AnalyticsMixin from '../../utils/piwik'
@@ -107,7 +108,11 @@ export default {
       await logout(this)
     },
     handleExport () {
-      exportLinesAsCsv(this)
+      if (Vue.cordova) {
+        saveLinesAsCsv(this)
+      } else {
+        exportLinesAsCsv(this)
+      }
     },
     search: debounce(function (value) {
       this.$router.push(`/items?q=${value}`)

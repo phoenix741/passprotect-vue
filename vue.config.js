@@ -1,5 +1,3 @@
-const CompressionPlugin = require('compression-webpack-plugin')
-
 module.exports = {
   devServer: {
     proxy: {
@@ -19,16 +17,6 @@ module.exports = {
       enableInSFC: false
     },
     cordovaPath: 'src-cordova'
-  },
-
-  configureWebpack: config => {
-    if (process.env.NODE_ENV === 'production') {
-      return {
-        plugins: [
-          new CompressionPlugin()
-        ]
-      }
-    }
   },
 
   chainWebpack: config => {

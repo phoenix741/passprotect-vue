@@ -164,6 +164,15 @@ export async function generate () {
   return generatePassword(128)
 }
 
+export async function saveLinesAsCsv (context) {
+  const json2csv = import(/* webpackChunkName: "csv" */ 'json2csv')
+
+  const data = await exportLines(context)
+  const csv = (await json2csv).parse(data)
+
+  return csv
+}
+
 export async function exportLinesAsCsv (context) {
   const json2csv = import(/* webpackChunkName: "csv" */ 'json2csv')
   const downloadAsFile = import(/* webpackChunkName: "csv" */ 'download-as-file')
