@@ -22,7 +22,8 @@
       "card": "Carte de paiement",
       "password": "Mot de passe",
       "text": "Général"
-    }
+    },
+    "progress": "Patientez s'il vous plait"
   },
   "item": {
     "title_creation": "Création",

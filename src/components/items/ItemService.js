@@ -164,15 +164,6 @@ export async function generate () {
   return generatePassword(128)
 }
 
-export async function saveLinesAsCsv (context) {
-  const json2csv = import(/* webpackChunkName: "csv" */ 'json2csv')
-
-  const data = await exportLines(context)
-  const csv = (await json2csv).parse(data)
-
-  return csv
-}
-
 export async function exportLinesAsCsv (context) {
   const json2csv = import(/* webpackChunkName: "csv" */ 'json2csv')
   const downloadAsFile = import(/* webpackChunkName: "csv" */ 'download-as-file')
@@ -186,17 +177,19 @@ export async function exportLinesAsCsv (context) {
 export async function exportLines (context) {
   const { data: { lines } } = await context.$apollo.query({ query: getLinesWithDetail })
 
-  return Promise.all(lines.map(async line => {
+  const result = []
+  for await (const line of lines) {
     const copy = Object.assign({}, line)
     copy.decryptedContent = await decryptLine(copy)
 
-    return Object.assign({},
+    result.push(Object.assign({},
       pick(copy, ['label']),
       pick(copy.decryptedContent, ['username', 'password', 'siteUrl', 'notes']),
       pick(copy.decryptedContent, ['type', 'nameOnCard', 'cardNumber', 'cvv', 'expiry', 'code', 'notes']),
       pick(copy.decryptedContent, ['text', 'notes'])
-    )
-  }))
+    ))
+  }
+  return result
 }
 
 function completeFields (type, clearInformation) {

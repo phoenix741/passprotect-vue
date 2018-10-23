@@ -10,14 +10,18 @@ import i18n from './plugins/i18n'
 import VueCordova from 'vue-cordova'
 
 (async function () {
-  Vue.use(VueCordova)
+  if (process.env.CORDOVA_PLATFORM) {
+    Vue.use(VueCordova)
+  }
   await veeValidate()
 
   Vue.config.productionTip = false
 
-  Vue.cordova.on('deviceready', () => {
-    navigator.splashscreen && navigator.splashscreen.hide()
-  })
+  if (process.env.CORDOVA_PLATFORM) {
+    Vue.cordova.on('deviceready', () => {
+      navigator.splashscreen && navigator.splashscreen.hide()
+    })
+  }
 
   new Vue({
     apolloProvider: createProvider(),

@@ -54,12 +54,18 @@ div
           v-icon fingerprint
         v-btn#items-add-text-button.green(fab,dark,small,to="/items/text/new")
           v-icon text_fields
+
+  v-dialog(v-model="progressDialog",overlay,persistent,width="300")
+    v-card(color="primary",dark)
+      v-card-text
+        | {{ $t('list.progress') }}
+        v-progress-linear.mb-0(indeterminate,color="white")
 </template>
 
 <script type="text/babel">
-import Vue from 'vue'
 import { SESSION, logout } from '../user/UserService'
-import { cardTypeMapping, removeLine, saveLinesAsCsv, exportLinesAsCsv } from './ItemService'
+import { cardTypeMapping, removeLine, exportLinesAsCsv } from './ItemService'
+import { saveLinesAsCsv } from './ItemServiceCordova'
 import getLines from './getLines.gql'
 import { debounce } from '../../utils/lodash'
 import AnalyticsMixin from '../../utils/piwik'
@@ -78,6 +84,7 @@ export default {
       showOptions: false,
       drawer: true,
       dialog: {},
+      progressDialog: false,
       lines: []
     }
   },
@@ -107,12 +114,18 @@ export default {
     async handleLogout () {
       await logout(this)
     },
-    handleExport () {
-      if (Vue.cordova) {
-        saveLinesAsCsv(this)
-      } else {
-        exportLinesAsCsv(this)
+    async handleExport () {
+      try {
+        this.progressDialog = true
+        if (process.env.CORDOVA_PLATFORM) {
+          await saveLinesAsCsv(this)
+        } else {
+          await exportLinesAsCsv(this)
+        }
+      } catch (err) {
+        console.log('can\'t export the csv', err)
       }
+      this.progressDialog = false
     },
     search: debounce(function (value) {
       this.$router.push(`/items?q=${value}`)

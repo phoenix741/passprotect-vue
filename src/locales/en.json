@@ -22,7 +22,8 @@
       "card": "Payment card",
       "password": "Password",
       "text": "General"
-    }
+    },
+    "progress": "Please stand by"
   },
   "item": {
     "title_creation": "Create",

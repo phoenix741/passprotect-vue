@@ -18,9 +18,7 @@ export async function createKeyDerivation (password, salt, options) {
   const keylen = options.keylen / 8
   const ivlen = options.ivlen / 8
   const digest = options.digest
-
   const array = await pbkdf2(password, salt, iterations, keylen + ivlen, digest)
-
   return splitBuffer(array, keylen, ivlen)
 }
 
