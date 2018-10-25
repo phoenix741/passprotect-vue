@@ -47,7 +47,7 @@ div(style="width: 400px; margin: auto;")
       v-card-actions.pa-3
         | {{ $t('register.form.already_registered') }}
         v-spacer
-        v-btn(flat,to="/signin",color="primary") {{ $t('register.form.signin') }}
+        v-btn(flat,to="/login",replace,color="primary") {{ $t('register.form.signin') }}
 </template>
 
 <script type="text/babel">

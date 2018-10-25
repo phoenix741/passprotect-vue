@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   v-toolbar(color="primary",dark,app)
-    v-btn(icon,exact,router=true,to="/items")
+    v-btn(icon,@click="$router.go(-1)")
       v-icon arrow_back
     v-toolbar-title.ml-0.pl-3
       span {{ $t('app.title') }}

@@ -10,10 +10,10 @@ import i18n from './plugins/i18n'
 import VueCordova from 'vue-cordova'
 
 (async function () {
+  await veeValidate()
   if (process.env.CORDOVA_PLATFORM) {
     Vue.use(VueCordova)
   }
-  await veeValidate()
 
   Vue.config.productionTip = false
 

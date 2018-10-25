@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   v-toolbar(color="primary",dark,app)
-    v-btn(icon,exact,router=true,to="/items")
+    v-btn(icon,exact,@click="$router.go(-1)")
       v-icon arrow_back
     v-toolbar-title.ml-0.pl-3
       span#title-label {{ $t(cardType.label) }}
@@ -168,7 +168,7 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     if (!SESSION.authenticated) {
-      return next('/login')
+      return next('/login', { replace: true })
     }
     return next()
   },

@@ -30,9 +30,9 @@ export async function login (context, creds, redirect) {
     await onLogin(context.$apollo.provider.defaultClient, token)
 
     if (redirect) {
-      context.$router.go(redirect)
+      context.$router.replace(redirect)
     } else {
-      context.$router.push('/items')
+      context.$router.replace('/items')
     }
   } catch (err) {
     context.errors.add({ field: err.fieldName, msg: err.message })

@@ -28,7 +28,7 @@ div(style="width: 400px; margin: auto;")
         v-btn#login-button(block,type="submit",dark,color="light-blue") {{ $t('login.dialog.button.connect') }}
         div.mt-4.mb-4
           |   {{ $t('login.dialog.button.noaccount') }}
-          router-link#register-link(to="/register") {{ $t('login.dialog.button.signup') }}
+          router-link#register-link(to="/register",replace) {{ $t('login.dialog.button.signup') }}
 </template>
 
 <script type="text/babel">

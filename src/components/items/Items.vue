@@ -128,7 +128,7 @@ export default {
       this.progressDialog = false
     },
     search: debounce(function (value) {
-      this.$router.push(`/items?q=${value}`)
+      this.$router.replace(`/items?q=${value}`)
     }, 500),
     remove (line) {
       this.dialog['remove' + line._id] = false
@@ -156,7 +156,7 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     if (!SESSION.authenticated) {
-      return next('/login')
+      return next('/login', { replace: true })
     }
     return next()
   },

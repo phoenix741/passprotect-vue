@@ -13,12 +13,12 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './pages/About.vue')
+      component: () => import(/* webpackChunkName: "page" */ './pages/About.vue')
     },
     {
       name: 'terms',
       path: '/terms',
-      component: () => import(/* webpackChunkName: "terms" */ './pages/Terms.vue')
+      component: () => import(/* webpackChunkName: "page" */ './pages/Terms.vue')
     },
     {
       name: 'items',
@@ -41,13 +41,13 @@ export default new Router({
     {
       name: 'new',
       path: '/items/:type/new',
-      component: () => import(/* webpackChunkName: "new" */ './components/items/ItemCreation.vue'),
+      component: () => import(/* webpackChunkName: "edit" */ './components/items/ItemCreation.vue'),
       props: true
     },
     {
       name: 'login',
       path: '/login',
-      component: () => import(/* webpackChunkName: "login" */ './components/user/Login.vue')
+      component: () => import(/* webpackChunkName: "items" */ './components/user/Login.vue')
     },
     {
       name: 'register',

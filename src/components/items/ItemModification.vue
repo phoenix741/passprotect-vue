@@ -23,12 +23,12 @@ export default {
   },
   methods: {
     close () {
-      this.$router.push('/items/' + this.line._id)
+      this.$router.go(-1)
     }
   },
   beforeRouteEnter (to, from, next) {
     if (!SESSION.authenticated) {
-      return next('/login')
+      return next('/login', { replace: true })
     }
     return next()
   },
