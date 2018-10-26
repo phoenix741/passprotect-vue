@@ -171,7 +171,7 @@ export async function exportLinesAsCsv (context) {
   const data = await exportLines(context)
   const csv = (await json2csv).parse(data)
 
-  return (await downloadAsFile)({ data: csv, filename: 'password.csv' })
+  return (await downloadAsFile).default({ data: csv, filename: 'password.csv' })
 }
 
 export async function exportLines (context) {
