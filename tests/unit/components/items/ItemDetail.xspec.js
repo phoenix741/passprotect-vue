@@ -8,7 +8,7 @@ import { cardTypeMapping } from '@/components/items/ItemService'
 
 describe('ItemDetail.vue', () => {
   let ItemDetailComponent, ItemDetailWithMocks, mockRouter, updateLineHandler, generateHandler
-  const DECRYPTED_LINE = {group: '', type: 'VISA', nameOnCard: 'MON NOM', cardNumber: '12345678910', cvv: '123', expiry: '12/20', code: '1234', notes: ''}
+  const DECRYPTED_LINE = { group: '', type: 'VISA', nameOnCard: 'MON NOM', cardNumber: '12345678910', cvv: '123', expiry: '12/20', code: '1234', notes: '' }
   const ENCRYPTED_LINE = {
     _id: '57fa5386d3cd8c0013ac93fd',
     type: 'card',

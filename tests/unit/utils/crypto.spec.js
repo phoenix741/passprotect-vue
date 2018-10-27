@@ -1,5 +1,4 @@
 import { createKeyDerivation, generateIV, generateKey, generatePassword, encrypt, decrypt } from '@/utils/crypto'
-import { expect } from 'chai'
 
 const config = {
   pbkdf2: {
@@ -9,7 +8,7 @@ const config = {
     digest: 'sha512'
   },
   cypherIv: {
-    algorithm: 'AES-256-GCM'
+    algorithm: 'aes-256-gcm'
   },
   ivSize: 64,
   keySize: 256
@@ -28,7 +27,7 @@ describe('crypto.js', () => {
     createKeyDerivationTestCase.forEach(value => {
       it(`Create a derivation key from a password ${value.password} and a salt ${value.salt}`, async () => {
         const key = await createKeyDerivation(value.password, value.salt, config.pbkdf2)
-        expect(key).to.deep.equal(value.expect)
+        expect(key).toEqual(value.expect)
       })
     })
   })
@@ -39,7 +38,7 @@ describe('crypto.js', () => {
     generateIVTestCase.forEach(value => {
       it(`Generate the IV for size ${value}`, async () => {
         const iv = await generateIV(value)
-        expect(iv.length).to.equal(value / 4)
+        expect(iv.length).toBe(value / 4)
       })
     })
   })
@@ -50,7 +49,7 @@ describe('crypto.js', () => {
     generateKeyTestCase.forEach(value => {
       it(`Generate the Key for size ${value}`, async () => {
         const key = await generateKey(value)
-        expect(key.length).to.equal(value / 4)
+        expect(key.length).toBe(value / 4)
       })
     })
   })
@@ -61,8 +60,8 @@ describe('crypto.js', () => {
     generatePasswordTestCase.forEach(value => {
       it(`Generate a password of a size ${value}`, async () => {
         const password = await generatePassword(value)
-        expect(password.length).to.equal(value / 8)
-        expect(password).to.match(/[a-zA-Z0-9!"#$%&\\'()*+,-./:;<=>?@\[\\\]\^_`{|}~]+/) // eslint-disable-line
+        expect(password.length).toBe(value / 8)
+        expect(password).toMatch(/[a-zA-Z0-9!"#$%&\\'()*+,-./:;<=>?@\[\\\]\^_`{|}~]+/) // eslint-disable-line
       })
     })
   })
@@ -70,15 +69,15 @@ describe('crypto.js', () => {
   describe('#encrypt', () => {
     const options = config.cypherIv
     const encryptTestCase = [
-      {text: 'text to encrypt', key: '2f75fffe5d3d0564a5ab0985521a6fa6dd802e87eb47cb962529f818ada4a9bb', iv: '5f16b7caa1aaf79bcfd45e2d', expect: {content: '65d73be2490996f24b7f54e0ac48f6', authTag: 'ada3386bd63223e7ea6923767c00128a'}},
-      {text: 'text to encrypt 2', key: '69616b6c1943f28710e293a927b0331ecf8662908feaf343dd921d0ff3cf547f', iv: '47c1d6031616b30026bbd515', expect: {content: '74c25b24ede8b230098342fc08efd8849e', authTag: '699464d3e976ac8599a6a66c4aeaf099'}},
-      {text: 'text to encrypt 3', key: '0cf0dacc68068c44b3da8b26374de8f5a0520eea608af2522acfc846e2a98585', iv: '194aec906bc1561ec1a883ee', expect: {content: '9b84e950bccd646c87335f32b9d7f1b19c', authTag: '3ada8b5ba241c570fb76f4f7b4b08f97'}}
+      { text: 'text to encrypt', key: '2f75fffe5d3d0564a5ab0985521a6fa6dd802e87eb47cb962529f818ada4a9bb', iv: '5f16b7caa1aaf79bcfd45e2d', expect: { content: '65d73be2490996f24b7f54e0ac48f6', authTag: 'ada3386bd63223e7ea6923767c00128a' } },
+      { text: 'text to encrypt 2', key: '69616b6c1943f28710e293a927b0331ecf8662908feaf343dd921d0ff3cf547f', iv: '47c1d6031616b30026bbd515', expect: { content: '74c25b24ede8b230098342fc08efd8849e', authTag: '699464d3e976ac8599a6a66c4aeaf099' } },
+      { text: 'text to encrypt 3', key: '0cf0dacc68068c44b3da8b26374de8f5a0520eea608af2522acfc846e2a98585', iv: '194aec906bc1561ec1a883ee', expect: { content: '9b84e950bccd646c87335f32b9d7f1b19c', authTag: '3ada8b5ba241c570fb76f4f7b4b08f97' } }
     ]
 
     encryptTestCase.forEach(value => {
       it(`Test encryption of ${value.text}`, async () => {
         const encryptedObject = await encrypt(value.text, value.key, value.iv, options)
-        expect(encryptedObject).to.deep.equal(value.expect)
+        expect(encryptedObject).toEqual(value.expect)
       })
     })
   })
@@ -86,15 +85,15 @@ describe('crypto.js', () => {
   describe('#decrypt', () => {
     const options = config.cypherIv
     const decryptTestCase = [
-      {text: 'text to encrypt', key: '2f75fffe5d3d0564a5ab0985521a6fa6dd802e87eb47cb962529f818ada4a9bb', iv: '5f16b7caa1aaf79bcfd45e2d', encryptedData: {content: '65d73be2490996f24b7f54e0ac48f6', authTag: 'ada3386bd63223e7ea6923767c00128a'}},
-      {text: 'text to encrypt 2', key: '69616b6c1943f28710e293a927b0331ecf8662908feaf343dd921d0ff3cf547f', iv: '47c1d6031616b30026bbd515', encryptedData: {content: '74c25b24ede8b230098342fc08efd8849e', authTag: '699464d3e976ac8599a6a66c4aeaf099'}},
-      {text: 'text to encrypt 3', key: '0cf0dacc68068c44b3da8b26374de8f5a0520eea608af2522acfc846e2a98585', iv: '194aec906bc1561ec1a883ee', encryptedData: {content: '9b84e950bccd646c87335f32b9d7f1b19c', authTag: '3ada8b5ba241c570fb76f4f7b4b08f97'}}
+      { text: 'text to encrypt', key: '2f75fffe5d3d0564a5ab0985521a6fa6dd802e87eb47cb962529f818ada4a9bb', iv: '5f16b7caa1aaf79bcfd45e2d', encryptedData: { content: '65d73be2490996f24b7f54e0ac48f6', authTag: 'ada3386bd63223e7ea6923767c00128a' } },
+      { text: 'text to encrypt 2', key: '69616b6c1943f28710e293a927b0331ecf8662908feaf343dd921d0ff3cf547f', iv: '47c1d6031616b30026bbd515', encryptedData: { content: '74c25b24ede8b230098342fc08efd8849e', authTag: '699464d3e976ac8599a6a66c4aeaf099' } },
+      { text: 'text to encrypt 3', key: '0cf0dacc68068c44b3da8b26374de8f5a0520eea608af2522acfc846e2a98585', iv: '194aec906bc1561ec1a883ee', encryptedData: { content: '9b84e950bccd646c87335f32b9d7f1b19c', authTag: '3ada8b5ba241c570fb76f4f7b4b08f97' } }
     ]
 
     decryptTestCase.forEach(value => {
       it(`Test decryption of ${value.text}`, async () => {
         const decryptedObject = await decrypt(value.encryptedData, value.key, value.iv, options)
-        expect(decryptedObject.toString()).to.equal(value.text)
+        expect(decryptedObject.toString()).toEqual(value.text)
       })
     })
   })

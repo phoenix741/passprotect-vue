@@ -181,7 +181,7 @@ describe('Items.vue', () => {
       title: 'items:list.title',
       showOptions: false,
       drawer: true,
-      dialog: {card: false, password: false, text: false, remove0: false, remove1: false, remove2: false, remove3: false},
+      dialog: { card: false, password: false, text: false, remove0: false, remove1: false, remove2: false, remove3: false },
       lines: ITEMS_LIST.data.lines
     })
 
@@ -191,7 +191,7 @@ describe('Items.vue', () => {
     await Vue.nextTick()
 
     expect(mockRouter.currentRoute.path).to.equal('/items')
-    expect(mockRouter.currentRoute.query).to.deep.equal({q: 'Carte'})
+    expect(mockRouter.currentRoute.query).to.deep.equal({ q: 'Carte' })
 
     ItemsComponent.setProps(mockRouter.currentRoute.query)
 
@@ -209,7 +209,7 @@ describe('Items.vue', () => {
     ItemsComponent.setData({
       title: 'items:list.title',
       showOptions: false,
-      dialog: {remove0: false, remove1: false, remove2: false, remove3: false},
+      dialog: { remove0: false, remove1: false, remove2: false, remove3: false },
       lines: ITEMS_LIST.data.lines
     })
 
@@ -225,7 +225,7 @@ describe('Items.vue', () => {
     ItemsComponent.setData({
       title: 'items:list.title',
       showOptions: false,
-      dialog: {remove0: false, remove1: false, remove2: false, remove3: false},
+      dialog: { remove0: false, remove1: false, remove2: false, remove3: false },
       lines: ITEMS_LIST.data.lines
     })
 

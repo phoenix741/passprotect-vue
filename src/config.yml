@@ -5,6 +5,6 @@ crypto:
         ivlen: 96
         digest: 'sha512'
     cypherIv:
-        algorithm: 'AES-256-GCM'
+        algorithm: 'aes-256-gcm'
     ivSize: 64
     keySize: 256

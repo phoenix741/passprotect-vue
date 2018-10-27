@@ -57,13 +57,13 @@ describe('ItemService.js', () => {
 
       await updateLine(context, line)
 
-      expect(lines).to.deep.equal([{_id: 1, group: 'group'}])
+      expect(lines).to.deep.equal([{ _id: 1, group: 'group' }])
       expect(groups).to.deep.equal(['group'])
       expect(context.error).to.be.an('undefined')
     })
 
     it('Update the line, no error, no line', async () => {
-      const lines = [{_id: 1, group: 'xxx'}]
+      const lines = [{ _id: 1, group: 'xxx' }]
       const groups = ['group']
       store = {
         readQuery: sinon.stub()
@@ -80,7 +80,7 @@ describe('ItemService.js', () => {
     })
 
     it('Update the line, with functional error', async () => {
-      context.$apollo.mutate = sinon.stub().returns(Promise.resolve({data: {createUpdateLine: {errors: [{fieldName: 'fieldName', message: 'message'}]}}}))
+      context.$apollo.mutate = sinon.stub().returns(Promise.resolve({ data: { createUpdateLine: { errors: [{ fieldName: 'fieldName', message: 'message' }] } } }))
       await updateLine(context, line)
       expect(context.error).to.be.an('error')
     })
@@ -107,7 +107,7 @@ describe('ItemService.js', () => {
     })
 
     it('Remove the line, no error', async () => {
-      const lines = [{_id: 1, group: 'group'}]
+      const lines = [{ _id: 1, group: 'group' }]
       store = {
         readQuery: sinon.stub().returns({ lines }),
         writeQuery: sinon.stub().returns()
@@ -120,13 +120,13 @@ describe('ItemService.js', () => {
     })
 
     it('Remove the line, no error, length = 0', async () => {
-      const NO_ERROR = {data: {removeLine: {errors: []}}}
+      const NO_ERROR = { data: { removeLine: { errors: [] } } }
       context.$apollo.mutate = sinon.stub().callsFake(async function (object) {
         object.update(store, NO_ERROR)
         return NO_ERROR
       })
 
-      const lines = [{_id: 1, group: 'group'}]
+      const lines = [{ _id: 1, group: 'group' }]
       store = {
         readQuery: sinon.stub().returns({ lines }),
         writeQuery: sinon.stub().returns()
@@ -139,7 +139,7 @@ describe('ItemService.js', () => {
     })
 
     it('Update the line, with functional error', async () => {
-      const NO_ERROR = {data: {removeLine: {errors: [{fieldName: 'fieldName', message: 'message'}]}}}
+      const NO_ERROR = { data: { removeLine: { errors: [{ fieldName: 'fieldName', message: 'message' }] } } }
       context.$apollo.mutate = sinon.stub().callsFake(async function (object) {
         object.update(store, NO_ERROR)
         return NO_ERROR
@@ -192,9 +192,9 @@ describe('ItemService.js', () => {
 
   describe('#decryptLine', () => {
     it('empty lines', async () => {
-      const empty = {group: '', type: '', nameOnCard: '', cardNumber: '', cvv: '', expiry: '', code: '', notes: ''}
-      const info1 = await decryptLine({type: 'card'})
-      const info2 = await decryptLine({type: 'card', encryption: {}})
+      const empty = { group: '', type: '', nameOnCard: '', cardNumber: '', cvv: '', expiry: '', code: '', notes: '' }
+      const info1 = await decryptLine({ type: 'card' })
+      const info2 = await decryptLine({ type: 'card', encryption: {} })
 
       expect(info1).to.deep.equal(empty)
       expect(info2).to.deep.equal(empty)

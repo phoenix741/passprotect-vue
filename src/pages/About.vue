@@ -40,7 +40,7 @@ div
 </template>
 
 <script type="text/babel">
-import AnalyticsMixin from '../utils/piwik'
+import AnalyticsMixin from '@/utils/piwik'
 
 export default {
   name: 'page-about',

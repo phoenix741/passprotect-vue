@@ -12,7 +12,7 @@ describe('ItemModification.vue', () => {
 
   beforeEach(() => {
     ItemModificationWithMocks = ItemModificationInjector({
-      '../user/UserService': {SESSION},
+      '../user/UserService': { SESSION },
       '../../utils/piwik': {}
     })
 
@@ -57,6 +57,6 @@ describe('ItemModification.vue', () => {
   })
 
   it('Check how the line is get by apollo', function () {
-    expect(ItemModificationComponent.vm.$options.apollo.line.variables.call({id: 'id'})).to.deep.equal({id: 'id'})
+    expect(ItemModificationComponent.vm.$options.apollo.line.variables.call({ id: 'id' })).to.deep.equal({ id: 'id' })
   })
 })

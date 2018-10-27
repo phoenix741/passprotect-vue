@@ -12,7 +12,7 @@ describe('ItemVisualisation.vue', () => {
     authenticated: true,
     clearKey: 'ee958f6809e430c9b8ff10b3cbec138f9150e0af1a00557144825fd5011e82ab'
   }
-  const decryptedLine = {group: '', type: 'VISA', nameOnCard: 'MON NOM', cardNumber: '12345678910', cvv: '123', expiry: '12/20', code: '1234', notes: ''}
+  const decryptedLine = { group: '', type: 'VISA', nameOnCard: 'MON NOM', cardNumber: '12345678910', cvv: '123', expiry: '12/20', code: '1234', notes: '' }
   const CARD_INFORMATION = {
     title: 'items:item.title_visualisation',
     line: {
@@ -115,6 +115,6 @@ describe('ItemVisualisation.vue', () => {
   })
 
   it('Check how the line is get by apollo', function () {
-    expect(ItemVisualisationComponent.vm.$options.apollo.line.variables.call({id: 'id'})).to.deep.equal({id: 'id'})
+    expect(ItemVisualisationComponent.vm.$options.apollo.line.variables.call({ id: 'id' })).to.deep.equal({ id: 'id' })
   })
 })

@@ -35,21 +35,22 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^3.0.1",
     "@vue/cli-plugin-babel": "^3.0.5",
     "@vue/cli-plugin-e2e-cypress": "^3.0.5",
     "@vue/cli-plugin-eslint": "^3.0.5",
     "@vue/cli-plugin-pwa": "^3.0.5",
-    "@vue/cli-plugin-unit-mocha": "^3.0.5",
+    "@vue/cli-plugin-unit-jest": "^3.0.5",
     "@vue/cli-service": "^3.0.5",
     "@vue/eslint-config-standard": "^3.0.5",
     "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.0.1",
     "babel-plugin-transform-imports": "^1.5.0",
-    "chai": "^4.1.2",
     "graphql-tag": "^2.10.0",
-    "inject-loader": "^4.0.1",
+    "jest-transform-graphql": "^2.1.0",
     "json-loader": "^0.5.7",
     "lint-staged": "^7.2.2",
-    "sinon": "^7.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-cli-plugin-apollo": "^0.17.3",
@@ -58,6 +59,7 @@
     "vue-cli-plugin-pug": "^1.0.7",
     "vue-cli-plugin-vuetify": "^0.4.5",
     "vue-template-compiler": "^2.5.17",
+    "vuetify-loader": "^1.0.5",
     "yaml-loader": "^0.5.0"
   },
   "eslintConfig": {
@@ -96,5 +98,30 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "\\.(gql|graphql)$": "jest-transform-graphql",
+      "^.+\\.vue$": "vue-jest",
+      ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
+      ".+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "snapshotSerializers": [
+      "jest-serializer-vue"
+    ],
+    "testMatch": [
+      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+    ],
+    "testURL": "http://localhost/",
+    "setupTestFrameworkScriptFile": "<rootDir>/tests/unit/jest-setup.js"
   }
 }
