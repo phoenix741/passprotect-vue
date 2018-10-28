@@ -53,7 +53,6 @@ export async function signup (context, creds, redirect) {
     return await login(context, creds, redirect)
   } catch (err) {
     context.errors.add({ field: err.fieldName, msg: err.message })
-    console.log(err)
   }
 }
 
@@ -65,7 +64,6 @@ export async function logout (context) {
 
   await onLogout(context.$apollo.provider.defaultClient)
 
-  context.$apollo.provider.defaultClient.resetStore()
   context.$router.push('/login')
 }
 

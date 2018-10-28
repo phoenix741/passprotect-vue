@@ -1,5 +1,3 @@
-import sinon from 'sinon'
-import { expect } from 'chai'
 import { updateLine, removeLine, encryptLine, decryptLine, generate, exportLinesAsCsv } from '@/components/items/ItemService'
 import { SESSION } from '@/components/user/UserService'
 
@@ -37,7 +35,7 @@ describe('ItemService.js', () => {
       }
       context = {
         $apollo: {
-          mutate: sinon.stub().callsFake(async function (object) {
+          mutate: jest.fn(async function (object) {
             object.update(store, responseUpdateLine)
             return responseUpdateLine
           })
@@ -49,46 +47,46 @@ describe('ItemService.js', () => {
       const lines = []
       const groups = []
       store = {
-        readQuery: sinon.stub()
-          .onFirstCall().returns({ lines })
-          .onSecondCall().returns({ groups }),
-        writeQuery: sinon.stub().returns()
+        readQuery: jest.fn()
+          .mockReturnValueOnce({ lines })
+          .mockReturnValueOnce({ groups }),
+        writeQuery: jest.fn()
       }
 
       await updateLine(context, line)
 
-      expect(lines).to.deep.equal([{ _id: 1, group: 'group' }])
-      expect(groups).to.deep.equal(['group'])
-      expect(context.error).to.be.an('undefined')
+      expect(lines).toEqual([{ _id: 1, group: 'group' }])
+      expect(groups).toEqual(['group'])
+      expect(context.error).toBeUndefined()
     })
 
     it('Update the line, no error, no line', async () => {
       const lines = [{ _id: 1, group: 'xxx' }]
       const groups = ['group']
       store = {
-        readQuery: sinon.stub()
-          .onFirstCall().returns({ lines })
-          .onSecondCall().returns({ groups }),
-        writeQuery: sinon.stub().returns()
+        readQuery: jest.fn()
+          .mockReturnValueOnce({ lines })
+          .mockReturnValueOnce({ groups }),
+        writeQuery: jest.fn()
       }
 
       await updateLine(context, line)
 
-      expect(lines).to.deep.equal(lines)
-      expect(groups).to.deep.equal(['group'])
-      expect(context.error).to.be.an('undefined')
+      expect(lines).toEqual(lines)
+      expect(groups).toEqual(['group'])
+      expect(context.error).toBeUndefined()
     })
 
     it('Update the line, with functional error', async () => {
-      context.$apollo.mutate = sinon.stub().returns(Promise.resolve({ data: { createUpdateLine: { errors: [{ fieldName: 'fieldName', message: 'message' }] } } }))
+      context.$apollo.mutate = jest.fn(() => Promise.resolve({ data: { createUpdateLine: { errors: [{ fieldName: 'fieldName', message: 'message' }] } } }))
       await updateLine(context, line)
-      expect(context.error).to.be.an('error')
+      expect(context.error.message).toEqual('message')
     })
 
     it('Update the line, with error', async () => {
-      context.$apollo.mutate = sinon.stub().returns(Promise.reject(new Error('error')))
+      context.$apollo.mutate = jest.fn(() => Promise.reject(new Error('error')))
       await updateLine(context, line)
-      expect(context.error).to.be.an('error')
+      expect(context.error.message).toEqual('error')
     })
   })
 
@@ -98,7 +96,7 @@ describe('ItemService.js', () => {
       lineId = 1
       context = {
         $apollo: {
-          mutate: sinon.stub().callsFake(async function (object) {
+          mutate: jest.fn(async function (object) {
             object.update(store, responseRemoveLine)
             return responseRemoveLine
           })
@@ -107,51 +105,55 @@ describe('ItemService.js', () => {
     })
 
     it('Remove the line, no error', async () => {
-      const lines = [{ _id: 1, group: 'group' }]
+      let lines = [{ _id: 1, group: 'group' }]
       store = {
-        readQuery: sinon.stub().returns({ lines }),
-        writeQuery: sinon.stub().returns()
+        readQuery: jest.fn(() => ({ lines })),
+        writeQuery: jest.fn(({ data }) => {
+          lines = data.lines
+        })
       }
 
       await removeLine(context, lineId)
 
-      expect(lines).to.deep.equal([])
-      expect(context.error).to.be.an('undefined')
+      expect(lines).toEqual([])
+      expect(context.error).toBeUndefined()
     })
 
     it('Remove the line, no error, length = 0', async () => {
       const NO_ERROR = { data: { removeLine: { errors: [] } } }
-      context.$apollo.mutate = sinon.stub().callsFake(async function (object) {
+      context.$apollo.mutate = jest.fn(async function (object) {
         object.update(store, NO_ERROR)
         return NO_ERROR
       })
 
-      const lines = [{ _id: 1, group: 'group' }]
+      let lines = [{ _id: 1, group: 'group' }]
       store = {
-        readQuery: sinon.stub().returns({ lines }),
-        writeQuery: sinon.stub().returns()
+        readQuery: jest.fn(() => ({ lines })),
+        writeQuery: jest.fn(({ data }) => {
+          lines = data.lines
+        })
       }
 
       await removeLine(context, lineId)
 
-      expect(lines).to.deep.equal([])
-      expect(context.error).to.be.an('undefined')
+      expect(lines).toEqual([])
+      expect(context.error).toBeUndefined()
     })
 
     it('Update the line, with functional error', async () => {
       const NO_ERROR = { data: { removeLine: { errors: [{ fieldName: 'fieldName', message: 'message' }] } } }
-      context.$apollo.mutate = sinon.stub().callsFake(async function (object) {
+      context.$apollo.mutate = jest.fn(async function (object) {
         object.update(store, NO_ERROR)
         return NO_ERROR
       })
       await removeLine(context, lineId)
-      expect(context.error).to.be.an('error')
+      expect(context.error.message).toEqual('message')
     })
 
     it('Update the line, with error', async () => {
-      context.$apollo.mutate = sinon.stub().returns(Promise.reject(new Error('error')))
+      context.$apollo.mutate = jest.fn(() => Promise.reject(new Error('error')))
       await removeLine(context, lineId)
-      expect(context.error).to.be.an('error')
+      expect(context.error.message).toEqual('error')
     })
   })
 
@@ -176,8 +178,9 @@ describe('ItemService.js', () => {
       }
 
       const decryptedInformation = await decryptLine(line)
-      expect(decryptedInformation).to.deep.equal({
+      expect(decryptedInformation).toEqual({
         group: '',
+        logo: '',
         type: '',
         nameOnCard: '',
         cardNumber: '1234 5678 9012 1234',
@@ -192,20 +195,20 @@ describe('ItemService.js', () => {
 
   describe('#decryptLine', () => {
     it('empty lines', async () => {
-      const empty = { group: '', type: '', nameOnCard: '', cardNumber: '', cvv: '', expiry: '', code: '', notes: '' }
+      const empty = { group: '', logo: '', type: '', nameOnCard: '', cardNumber: '', cvv: '', expiry: '', code: '', notes: '' }
       const info1 = await decryptLine({ type: 'card' })
       const info2 = await decryptLine({ type: 'card', encryption: {} })
 
-      expect(info1).to.deep.equal(empty)
-      expect(info2).to.deep.equal(empty)
+      expect(info1).toEqual(empty)
+      expect(info2).toEqual(empty)
     })
   })
 
   describe('#generate', () => {
     it('generate a password', async () => {
       const password = await generate()
-      expect(password.length).to.equal(16)
-      expect(password).to.match(/[a-zA-Z0-9!"#$%&\\'()*+,-./:;<=>?@\[\\\]\^_`{|}~]+/) // eslint-disable-line
+      expect(password.length).toEqual(16)
+      expect(password).toEqual(expect.stringMatching(/[a-zA-Z0-9!"#$%&\\'()*+,-./:;<=>?@\[\\\]\^_`{|}~]+/)) // eslint-disable-line
     })
   })
 
@@ -222,12 +225,10 @@ describe('ItemService.js', () => {
     beforeEach(() => {
       context = {
         $apollo: {
-          addSmartQuery: sinon.stub().callsFake(function (name, object) {
-            object.result(responseLinesWithDetail)
-          }),
+          query: jest.fn(async () => responseLinesWithDetail),
           queries: {
             lines: {
-              stop: sinon.stub()
+              stop: jest.fn()
             }
           }
         }
@@ -239,8 +240,8 @@ describe('ItemService.js', () => {
     })
 
     it('Update the line, with error', () => {
-      context.$apollo.addSmartQuery = sinon.stub().callsFake(function (name, object) {
-        object.error(new Error('error'))
+      context.$apollo.query = jest.fn(() => {
+        throw new Error('error')
       })
 
       return exportLinesAsCsv(context).then(function () {
