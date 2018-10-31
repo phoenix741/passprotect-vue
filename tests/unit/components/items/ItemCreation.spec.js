@@ -1,27 +1,26 @@
 import { shallowMount } from '@vue/test-utils'
-import sinon from 'sinon'
 import Router from 'vue-router'
-import ItemCreationInjector from '!!vue-loader?inject!@/components/items/ItemCreation.vue' // eslint-disable-line
+import ItemCreation from '@/components/items/ItemCreation.vue'
+import { setSession } from '@/components/user/UserService'
+
+jest.mock('@/components/user/UserService')
+jest.mock('@/utils/piwik')
 
 describe('ItemCreation.vue', () => {
-  let ItemCreationComponent, ItemCreationWithMocks, mockRouter
+  let ItemCreationComponent, mockRouter
   const SESSION = {
     authenticated: true,
     clearKey: 'ee958f6809e430c9b8ff10b3cbec138f9150e0af1a00557144825fd5011e82ab'
   }
 
   beforeEach(() => {
-    console.log(ItemCreationInjector)
-    ItemCreationWithMocks = ItemCreationInjector({
-      '../user/UserService': { SESSION },
-      '../../utils/piwik': {}
-    })
+    setSession(SESSION)
 
     mockRouter = new Router({ routes: [
       { path: '/items/:id/create', name: 'creation' }
     ] })
 
-    ItemCreationComponent = shallowMount(ItemCreationWithMocks, {
+    ItemCreationComponent = shallowMount(ItemCreation, {
       router: mockRouter,
       propsData: {
         type: 'text'
@@ -34,19 +33,19 @@ describe('ItemCreation.vue', () => {
   it('Test that beforeRouteEnter is executed - authenticated', () => {
     const to = '/to'
     const from = '/from'
-    const next = sinon.spy()
+    const next = jest.fn()
 
     ItemCreationComponent.vm.$options.beforeRouteEnter.forEach(beforeRouteEnter => {
       beforeRouteEnter(to, from, next)
     })
 
-    sinon.assert.calledWith(next)
+    expect(next).toBeCalled()
   })
 
   it('Test that beforeRouteEnter is executed - not authenticated', () => {
     const to = '/to'
     const from = '/from'
-    const next = sinon.spy()
+    const next = jest.fn()
 
     SESSION.authenticated = false
 
@@ -54,6 +53,6 @@ describe('ItemCreation.vue', () => {
       beforeRouteEnter(to, from, next)
     })
 
-    sinon.assert.calledWith(next, '/login')
+    expect(next).toBeCalledWith('/login', { replace: true })
   })
 })

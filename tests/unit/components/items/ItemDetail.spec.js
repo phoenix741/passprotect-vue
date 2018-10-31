@@ -1,13 +1,15 @@
-import { shallowMount } from '@vue/test-utils'
-import sinon from 'sinon'
-import { expect } from 'chai'
+import { mount } from '@vue/test-utils'
 import Vue from 'vue'
 import Router from 'vue-router'
-import ItemDetailInjector from '!!vue-loader?inject!@/components/items/ItemDetail.vue' // eslint-disable-line
-import { cardTypeMapping } from '@/components/items/ItemService'
+import ItemDetail from '@/components/items/ItemDetail.vue'
+import { setUpdateLineHandler } from '@/components/items/ItemService'
+import { setEncryptLineHandler, setDecryptLineHandler, setGenerateHandler } from '@/components/items/ItemCryptedService'
+
+jest.mock('@/components/items/ItemService')
+jest.mock('@/components/items/ItemCryptedService')
 
 describe('ItemDetail.vue', () => {
-  let ItemDetailComponent, ItemDetailWithMocks, mockRouter, updateLineHandler, generateHandler
+  let ItemDetailComponent, mockRouter, updateLineHandler, generateHandler
   const DECRYPTED_LINE = { group: '', type: 'VISA', nameOnCard: 'MON NOM', cardNumber: '12345678910', cvv: '123', expiry: '12/20', code: '1234', notes: '' }
   const ENCRYPTED_LINE = {
     _id: '57fa5386d3cd8c0013ac93fd',
@@ -35,23 +37,16 @@ describe('ItemDetail.vue', () => {
   }
 
   beforeEach(() => {
-    updateLineHandler = sinon.spy()
-    generateHandler = sinon.mock().callsFake(async () => 'passwordtest')
-    ItemDetailWithMocks = ItemDetailInjector({
-      './ItemService': {
-        cardTypeMapping,
-        decryptLine: () => DECRYPTED_LINE,
-        updateLine: updateLineHandler,
-        generate: generateHandler,
-        encryptLine: () => ENCRYPTED_LINE.encryption
-      }
-    })
+    setUpdateLineHandler(updateLineHandler = jest.fn())
+    setGenerateHandler(generateHandler = jest.fn(async () => 'passwordtest'))
+    setEncryptLineHandler(jest.fn(() => ENCRYPTED_LINE.encryption))
+    setDecryptLineHandler(jest.fn(() => DECRYPTED_LINE))
 
     mockRouter = new Router({ routes: [
       { path: '/items/:id/modification', name: 'modification' }
     ] })
 
-    ItemDetailComponent = shallowMount(ItemDetailWithMocks, {
+    ItemDetailComponent = mount(ItemDetail, {
       router: mockRouter,
       propsData: {
         line: ENCRYPTED_LINE
@@ -60,7 +55,7 @@ describe('ItemDetail.vue', () => {
   })
 
   it('Check mount without type', async () => {
-    ItemDetailComponent = shallowMount(ItemDetailWithMocks, {
+    ItemDetailComponent = mount(ItemDetail, {
       router: mockRouter,
       propsData: {
         line: {}
@@ -71,8 +66,8 @@ describe('ItemDetail.vue', () => {
     await ItemDetailComponent.vm.decryptClearInformation({})
     await Vue.nextTick()
 
-    expect(ItemDetailComponent.vm.$data.lineToModify).to.deep.equal({})
-    expect(ItemDetailComponent.vm.$data.clearInformation).to.equal(DECRYPTED_LINE)
+    expect(ItemDetailComponent.vm.$data.lineToModify).toEqual({})
+    expect(ItemDetailComponent.vm.$data.clearInformation).toEqual(DECRYPTED_LINE)
   })
 
   it('Test the content of the vue', async () => {
@@ -84,20 +79,22 @@ describe('ItemDetail.vue', () => {
     await ItemDetailComponent.vm.decryptClearInformation(ENCRYPTED_LINE)
     await Vue.nextTick()
 
-    expect(ItemDetailComponent.find('#title-label').text()).to.equal('items:list.type.card')
-    expect(ItemDetailComponent.find('#label-input').element.value).to.equal('Carte bancaire')
-    expect(ItemDetailComponent.find('#name-on-card-input').element.value).to.equal('MON NOM')
-    expect(ItemDetailComponent.find('#card-number-input').element.value).to.equal('12345678910')
-    expect(ItemDetailComponent.find('#cvv-input').element.value).to.equal('123')
-    expect(ItemDetailComponent.find('#code-input').element.value).to.equal('1234')
-    expect(ItemDetailComponent.find('#expiry-input').element.value).to.equal('12/20')
+    console.log(ItemDetailComponent.html())
+
+    expect(ItemDetailComponent.find('#title-label').text()).toEqual('list.type.card')
+    expect(ItemDetailComponent.find('#label-input').element.value).toEqual('Carte bancaire')
+    expect(ItemDetailComponent.find('#name-on-card-input').element.value).toEqual('MON NOM')
+    expect(ItemDetailComponent.find('#card-number-input').element.value).toEqual('12345678910')
+    expect(ItemDetailComponent.find('#cvv-input').element.value).toEqual('123')
+    expect(ItemDetailComponent.find('#code-input').element.value).toEqual('1234')
+    expect(ItemDetailComponent.find('#expiry-input').element.value).toEqual('12/20')
 
     const groupsElement = ItemDetailComponent.findAll('.list__tile--link')
     const groups = []
     for (let i = 0; i < groupsElement.length; i++) {
       groups.push(groupsElement.at(i).text())
     }
-    expect(groups).to.deep.equal(['group1', 'group2', 'items:item.form.group.newItem', 'items:item.form.type.options'])
+    expect(groups).toEqual(['group1', 'group2', 'item.form.group.newItem', 'item.form.type.options'])
   })
 
   it('Test validation of input label', async () => {
@@ -117,12 +114,12 @@ describe('ItemDetail.vue', () => {
     await Vue.nextTick()
     await ItemDetailComponent.vm.submit()
 
-    expect(ItemDetailComponent.html()).to.match(/The items:item.form.label.field field is required./)
-    sinon.assert.notCalled(updateLineHandler)
+    expect(ItemDetailComponent.html()).toEqual(expect.stringMatching(/The item.form.label.field field is required./))
+    expect(updateLineHandler).not.toBeCalled()
   })
 
   it('Generate a password', async () => {
-    ItemDetailComponent = shallowMount(ItemDetailWithMocks, {
+    ItemDetailComponent = mount(ItemDetail, {
       router: mockRouter,
       propsData: {
         line: ENCRYPTED_PASSWORD
@@ -136,8 +133,8 @@ describe('ItemDetail.vue', () => {
     ItemDetailComponent.find('#generate-password').trigger('click')
     await Vue.nextTick()
 
-    sinon.assert.calledWith(generateHandler)
-    expect(ItemDetailComponent.vm.$data.clearInformation.password).to.equal('passwordtest')
+    expect(generateHandler).toBeCalled()
+    expect(ItemDetailComponent.vm.$data.clearInformation.password).toEqual('passwordtest')
   })
 
   it('Submit the form - existing group', async () => {
@@ -147,7 +144,7 @@ describe('ItemDetail.vue', () => {
 
     await ItemDetailComponent.vm.submit()
 
-    sinon.assert.calledWith(updateLineHandler, sinon.match({}), ENCRYPTED_LINE)
+    expect(updateLineHandler).toBeCalledWith(expect.anything(), ENCRYPTED_LINE)
     expect(ItemDetailComponent.emitted().close.length).to.equal(1)
   })
 
@@ -165,7 +162,7 @@ describe('ItemDetail.vue', () => {
     const newLine = Object.assign({}, ENCRYPTED_LINE)
     newLine.group = 'newGroup'
 
-    sinon.assert.calledWith(updateLineHandler, sinon.match({}), newLine)
+    expect(updateLineHandler).toBeCalledWith(expect.anything(), newLine)
     expect(ItemDetailComponent.emitted().close.length).to.equal(1)
   })
 })

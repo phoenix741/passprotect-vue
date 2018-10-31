@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Vue from 'vue'
 import Router from 'vue-router'
 import { setSignupHandler } from '@/components/user/UserService'
@@ -9,29 +9,27 @@ jest.mock('@/components/user/UserService')
 describe('Register.vue', () => {
   let RegisterComponent, signupHandler
   beforeEach(() => {
-    setSignupHandler(jest.fn())
+    setSignupHandler(signupHandler = jest.fn())
 
     const mockRouter = new Router({ routes: [] })
-    RegisterComponent = shallowMount(Register, {
+    RegisterComponent = mount(Register, {
       router: mockRouter
     })
   })
 
-  fit('should render correct contents', async () => {
+  it('should render correct contents', async () => {
     const data = {
       username: 'myusername',
       password: 'mypassword',
       passwordRepeat: 'mypassword'
     }
 
-    console.log(RegisterComponent.vm.$el.innerHTML)
     RegisterComponent.setData(data)
-    // await RegisterComponent.vm.submit()
-    /*
-    expect(signupHandler).toBeCalledWith({}, {
+    await RegisterComponent.vm.submit()
+    expect(signupHandler).toBeCalledWith(expect.anything(), {
       username: 'myusername',
       password: 'mypassword'
-    }) */
+    })
   })
 
   it('Test validation of input (username and password required)', async () => {
@@ -49,10 +47,10 @@ describe('Register.vue', () => {
     await Vue.nextTick()
     await RegisterComponent.vm.submit()
 
-    expect(RegisterComponent.html()).to.match(/The user:register.form.identity_username.field field is required./)
-    expect(RegisterComponent.html()).to.match(/The user:register.form.identity_password1.field field is required./)
-    expect(RegisterComponent.html()).to.match(/The user:register.form.identity_password2.field field is required./)
-    sinon.assert.notCalled(signupHandler)
+    expect(RegisterComponent.html()).toEqual(expect.stringMatching(/The user:register.form.identity_username.field field is required./))
+    expect(RegisterComponent.html()).toEqual(expect.stringMatching(/The user:register.form.identity_password1.field field is required./))
+    expect(RegisterComponent.html()).toEqual(expect.stringMatching(/The user:register.form.identity_password2.field field is required./))
+    expect(signupHandler).not.toBeCalled()
   })
 
   it('Test validation of input (password must be at least 8 characters)', async () => {
@@ -70,8 +68,8 @@ describe('Register.vue', () => {
     await Vue.nextTick()
     await RegisterComponent.vm.submit()
 
-    expect(RegisterComponent.html()).to.match(/The user:register.form.identity_password1.field field must be at least 8 characters./)
-    sinon.assert.notCalled(signupHandler)
+    expect(RegisterComponent.html()).toEqual(expect.stringMatching(/The user:register.form.identity_password1.field field must be at least 8 characters./))
+    expect(signupHandler).not.toBeCalled()
   })
 
   it('Test validation of input (password different)', async () => {
@@ -89,7 +87,7 @@ describe('Register.vue', () => {
     await Vue.nextTick()
     await RegisterComponent.vm.submit()
 
-    expect(RegisterComponent.html()).to.match(/The user:register.form.identity_password2.field confirmation does not match./)
-    sinon.assert.notCalled(signupHandler)
+    expect(RegisterComponent.html()).toEqual(expect.stringMatching(/The user:register.form.identity_password2.field confirmation does not match./))
+    expect(signupHandler).not.toBeCalled()
   })
 })

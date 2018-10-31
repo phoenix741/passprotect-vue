@@ -64,7 +64,8 @@ div
 
 <script type="text/babel">
 import { SESSION, logout } from '../user/UserService'
-import { cardTypeMapping, removeLine, exportLinesAsCsv } from './ItemService'
+import { removeLine, exportLinesAsCsv } from './ItemService'
+import { cardTypeMapping } from './ItemCryptedService'
 import { saveLinesAsCsv } from './ItemServiceCordova'
 import getLines from './getLines.gql'
 import { debounce } from '../../utils/lodash'

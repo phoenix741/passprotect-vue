@@ -1,23 +1,19 @@
-import { shallowMount } from '@vue/test-utils'
-import { expect } from 'chai'
-import sinon from 'sinon'
+import { mount } from '@vue/test-utils'
 import Vue from 'vue'
 import Router from 'vue-router'
-import LoginInjector from '!!vue-loader?inject!@/components/user/Login.vue' // eslint-disable-line
+import { setLoginHandler } from '@/components/user/UserService'
+import Login from '@/components/user/Login.vue'
+
+jest.mock('@/components/user/UserService')
 
 describe('Login.vue', () => {
   let LoginComponent, loginHandler
   beforeEach(() => {
-    loginHandler = sinon.spy()
-    const LoginWithMocks = LoginInjector({
-      './UserService': {
-        login: loginHandler
-      }
-    })
+    setLoginHandler(loginHandler = jest.fn())
 
     const mockRouter = new Router({ routes: [ { path: '/register', name: 'register' } ] })
 
-    LoginComponent = shallowMount(LoginWithMocks, {
+    LoginComponent = mount(Login, {
       router: mockRouter
     })
   })
@@ -31,8 +27,7 @@ describe('Login.vue', () => {
     LoginComponent.setData(data)
     await LoginComponent.vm.submit()
 
-    expect(loginHandler.called).to.equal(true)
-    sinon.assert.calledWith(loginHandler, sinon.match({}), data)
+    expect(loginHandler).toBeCalledWith(expect.anything(), data)
   })
 
   it('Test validation of input (username and password required)', async () => {
@@ -48,9 +43,9 @@ describe('Login.vue', () => {
     await Vue.nextTick()
     await LoginComponent.vm.submit()
 
-    expect(LoginComponent.html()).to.match(/The user:login.form.username.field field is required./)
-    expect(LoginComponent.html()).to.match(/The user:login.form.password.field field is required./)
-    sinon.assert.notCalled(loginHandler)
+    expect(LoginComponent.html()).toBe(expect.stringMatch(/The user:login.form.username.field field is required./))
+    expect(LoginComponent.html()).toBe(expect.stringMatch(/The user:login.form.password.field field is required./))
+    expect(loginHandler).not.toBeCalled()
   })
 
   it('Test validation of input (password must be at least 8 characters)', async () => {
@@ -66,7 +61,7 @@ describe('Login.vue', () => {
     await Vue.nextTick()
     await LoginComponent.vm.submit()
 
-    expect(LoginComponent.html()).to.match(/The user:login.form.password.field field must be at least 8 characters./)
-    sinon.assert.notCalled(loginHandler)
+    expect(LoginComponent.html()).toBe(expect.stringMatch(/The user:login.form.password.field field must be at least 8 characters./))
+    expect(loginHandler).not.toBeCalled()
   })
 })

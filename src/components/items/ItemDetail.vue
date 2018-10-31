@@ -120,7 +120,8 @@ v-card
 
 <script type="text/babel">
 import { pick, cloneDeep } from '../../utils/lodash'
-import { cardTypeMapping, updateLine, decryptLine, encryptLine, generate } from './ItemService'
+import { updateLine } from './ItemService'
+import { cardTypeMapping, decryptLine, encryptLine, generate } from './ItemCryptedService'
 import getGroups from './getGroups.gql'
 import NewGroupVue from './NewGroup.vue'
 import UploadImageVue from '../shared/UploadImage.vue'

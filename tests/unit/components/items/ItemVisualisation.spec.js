@@ -1,13 +1,17 @@
-import { shallowMount } from '@vue/test-utils'
-import { expect } from 'chai'
-import sinon from 'sinon'
+import { mount } from '@vue/test-utils'
 import Vue from 'vue'
 import Router from 'vue-router'
-import ItemVisualisationInjector from '!!vue-loader?inject!@/components/items/ItemVisualisation.vue' // eslint-disable-line
-import { cardTypeMapping } from '@/components/items/ItemService'
+import ItemVisualisation from '@/components/items/ItemVisualisation'
+import { setDecryptLineHandler } from '@/components/items/ItemCryptedService'
+import { setSession } from '@/components/user/UserService'
+import copyHandler from 'clipboard-copy'
+
+jest.mock('@/components/user/UserService')
+jest.mock('@/components/items/ItemCryptedService')
+jest.mock('clipboard-copy')
 
 describe('ItemVisualisation.vue', () => {
-  let ItemVisualisationComponent, ItemVisualisationWithMocks, copyHandler, mockRouter
+  let ItemVisualisationComponent, mockRouter
   const SESSION = {
     authenticated: true,
     clearKey: 'ee958f6809e430c9b8ff10b3cbec138f9150e0af1a00557144825fd5011e82ab'
@@ -33,25 +37,15 @@ describe('ItemVisualisation.vue', () => {
   }
 
   beforeEach(() => {
-    copyHandler = sinon.spy()
-    ItemVisualisationWithMocks = ItemVisualisationInjector({
-      'clipboard-copy': copyHandler,
-      '../user/UserService': {
-        SESSION
-      },
-      './ItemService': {
-        cardTypeMapping,
-        decryptLine: async () => decryptedLine
-      },
-      '../../utils/piwik': {}
-    })
+    setDecryptLineHandler(async () => decryptedLine)
+    setSession(SESSION)
 
     mockRouter = new Router({ routes: [
       { path: '/items/:id', name: 'visualisation_tems' },
       { path: '/items/:id/edit', name: 'edit_items' }
     ] })
 
-    ItemVisualisationComponent = shallowMount(ItemVisualisationWithMocks, {
+    ItemVisualisationComponent = mount(ItemVisualisation, {
       router: mockRouter
     })
 
@@ -64,14 +58,14 @@ describe('ItemVisualisation.vue', () => {
     await ItemVisualisationComponent.vm.decryptClearInformation(CARD_INFORMATION.line)
     await Vue.nextTick()
 
-    expect(ItemVisualisationComponent.find('#title-label').text()).to.equal('items:list.type.card')
-    expect(ItemVisualisationComponent.find('#label-text').text()).to.equal('Carte bancaire')
-    expect(ItemVisualisationComponent.find('#type-of-card-text').text()).to.equal('VISA')
-    expect(ItemVisualisationComponent.find('#name-on-card-text').text()).to.equal('MON NOM')
-    expect(ItemVisualisationComponent.find('#card-number-text').text()).to.equal('12345678910')
-    expect(ItemVisualisationComponent.find('#cvv-text').text()).to.equal('123')
-    expect(ItemVisualisationComponent.find('#code-text').text()).to.equal('1234')
-    expect(ItemVisualisationComponent.find('#expiry-text').text()).to.equal('12/20')
+    expect(ItemVisualisationComponent.find('#title-label').text()).toBe('list.type.card')
+    expect(ItemVisualisationComponent.find('#label-text').text()).toBe('Carte bancaire')
+    expect(ItemVisualisationComponent.find('#type-of-card-text').text()).toBe('VISA')
+    expect(ItemVisualisationComponent.find('#name-on-card-text').text()).toBe('MON NOM')
+    expect(ItemVisualisationComponent.find('#card-number-text').text()).toBe('12345678910')
+    expect(ItemVisualisationComponent.find('#cvv-text').text()).toBe('123')
+    expect(ItemVisualisationComponent.find('#code-text').text()).toBe('1234')
+    expect(ItemVisualisationComponent.find('#expiry-text').text()).toBe('12/20')
   })
 
   it('should copy to clipbloard', async () => {
@@ -83,27 +77,27 @@ describe('ItemVisualisation.vue', () => {
     const buttons = ItemVisualisationComponent.findAll('.copy-button')
     for (let i = 0; i < buttons.length; i++) {
       buttons.at(i).trigger('click')
-      sinon.assert.calledOnce(copyHandler)
-      copyHandler.reset()
+      expect(copyHandler).toHaveBeenCalledTimes(1)
+      copyHandler.mockReset()
     }
   })
 
   it('Test that beforeRouteEnter is executed - authenticated', async () => {
     const to = '/to'
     const from = '/from'
-    const next = sinon.spy()
+    const next = jest.fn()
 
     ItemVisualisationComponent.vm.$options.beforeRouteEnter.forEach(beforeRouteEnter => {
       beforeRouteEnter(to, from, next)
     })
 
-    sinon.assert.calledWith(next)
+    expect(next).toBeCalledWith()
   })
 
   it('Test that beforeRouteEnter is executed - not authenticated', async () => {
     const to = '/to'
     const from = '/from'
-    const next = sinon.spy()
+    const next = jest.fn()
 
     SESSION.authenticated = false
 
@@ -111,10 +105,10 @@ describe('ItemVisualisation.vue', () => {
       beforeRouteEnter(to, from, next)
     })
 
-    sinon.assert.calledWith(next, '/login')
+    expect(next).toBeCalledWith('/login', { replace: true })
   })
 
   it('Check how the line is get by apollo', function () {
-    expect(ItemVisualisationComponent.vm.$options.apollo.line.variables.call({ id: 'id' })).to.deep.equal({ id: 'id' })
+    expect(ItemVisualisationComponent.vm.$options.apollo.line.variables.call({ id: 'id' })).toEqual({ id: 'id' })
   })
 })

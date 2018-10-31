@@ -1,6 +1,3 @@
-import config from '../../config.yml'
-import { SESSION } from '../user/UserService'
-import { createKeyDerivation, decrypt, encrypt, generateIV, generatePassword } from '../../utils/crypto'
 import { parseErrors } from '../../utils/errors'
 import { pick } from '../../utils/lodash'
 import deepmerge from 'deepmerge'
@@ -9,49 +6,7 @@ import removeLineQuery from './removeLine.gql'
 import getLines from './getLines.gql'
 import getGroups from './getGroups.gql'
 import getLinesWithDetail from './getLinesWithDetail.gql'
-
-export const cardTypeMapping = {
-  card: {
-    label: 'list.type.card',
-    icon: 'credit_card',
-    color: 'red',
-    fields: {
-      group: '',
-      type: '',
-      nameOnCard: '',
-      cardNumber: '',
-      cvv: '',
-      expiry: '',
-      code: '',
-      logo: '',
-      notes: ''
-    }
-  },
-  password: {
-    label: 'list.type.password',
-    icon: 'fingerprint',
-    color: 'blue',
-    fields: {
-      group: '',
-      username: '',
-      password: '',
-      siteUrl: '',
-      logo: '',
-      notes: ''
-    }
-  },
-  text: {
-    label: 'list.type.text',
-    icon: 'text_fields',
-    color: 'green',
-    fields: {
-      group: '',
-      text: '',
-      logo: '',
-      notes: ''
-    }
-  }
-}
+import { decryptLine } from './ItemCryptedService'
 
 export async function updateLine (context, line) {
   try {
@@ -135,35 +90,6 @@ export async function removeLine (context, lineId) {
   }
 }
 
-export async function encryptLine (clearInformation) {
-  const informationsString = JSON.stringify(clearInformation)
-
-  const salt = await generateIV(config.crypto.ivSize)
-  const lineKey = await createKeyDerivation(SESSION.clearKey, salt, config.crypto.pbkdf2)
-
-  const informations = await encrypt(Buffer.from(informationsString, 'utf-8'), lineKey.key, lineKey.iv, config.crypto.cypherIv)
-
-  return { salt, informations }
-}
-
-export async function decryptLine (line) {
-  if (!line.encryption || !line.encryption.informations) {
-    return completeFields(line.type, {})
-  }
-
-  const salt = line.encryption.salt
-  const informationsEncrypted = line.encryption.informations
-
-  const lineKey = await createKeyDerivation(SESSION.clearKey, salt, config.crypto.pbkdf2)
-  const informationString = await decrypt(informationsEncrypted, lineKey.key, lineKey.iv, config.crypto.cypherIv)
-
-  return completeFields(line.type, JSON.parse(informationString))
-}
-
-export async function generate () {
-  return generatePassword(128)
-}
-
 export async function exportLinesAsCsv (context) {
   const json2csv = import(/* webpackChunkName: "csv" */ 'json2csv')
   const downloadAsFile = import(/* webpackChunkName: "csv" */ 'download-as-file')
@@ -190,9 +116,4 @@ export async function exportLines (context) {
     ))
   }
   return result
-}
-
-function completeFields (type, clearInformation) {
-  const fields = cardTypeMapping[type].fields
-  return Object.assign({}, fields, clearInformation)
 }

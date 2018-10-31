@@ -142,7 +142,7 @@ import copy from 'clipboard-copy'
 import { SESSION } from '../user/UserService'
 import getLine from './getLine.gql'
 import AnalyticsMixin from '../../utils/piwik'
-import { cardTypeMapping, decryptLine } from './ItemService'
+import { cardTypeMapping, decryptLine } from './ItemCryptedService'
 import zxcvbn from 'zxcvbn'
 
 export default {
@@ -159,7 +159,6 @@ export default {
   },
   methods: {
     copyToClipboard (label) {
-      console.log('copy to clipboard')
       copy(label)
     },
     async decryptClearInformation (val) {

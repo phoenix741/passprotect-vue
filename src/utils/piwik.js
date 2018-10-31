@@ -2,10 +2,9 @@
 
 import { SESSION } from '../components/user/UserService'
 
-const VUE_APP_PIWIK_ENABLED = JSON.parse(process.env.VUE_APP_PIWIK_ENABLED)
-
 export default {
   created () {
+    this.piwikEnable = JSON.parse(process.env.VUE_APP_PIWIK_ENABLED)
     this.startTracking()
   },
   mounted () {
@@ -13,7 +12,7 @@ export default {
   },
   methods: {
     startTracking () {
-      if (VUE_APP_PIWIK_ENABLED) {
+      if (this.piwikEnable) {
         this.startGenerationTimeMs = (new Date()).getTime()
       }
     },
@@ -21,7 +20,7 @@ export default {
     trackPage () {
       document.title = this.title
 
-      if (VUE_APP_PIWIK_ENABLED) {
+      if (this.piwikEnable) {
         const timeMs = (new Date()).getTime() - this.startGenerationTimeMs
         trackPageView(this.$route.path, document.title, SESSION.username, timeMs)
       }
