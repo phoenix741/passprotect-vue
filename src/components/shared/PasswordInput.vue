@@ -21,6 +21,7 @@ v-text-field(
 import zxcvbn from 'zxcvbn'
 
 export default {
+  name: 'PasswordInput',
   props: {
     label: String,
     value: {

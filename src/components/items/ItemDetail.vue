@@ -99,7 +99,7 @@ v-card
               v-model="clearInformation.username")
 
           v-flex(xs12)
-            password-input#password-input(
+            PasswordInput#password-input(
               :label="$t('item.form.password.field')",
               :words="passwordExcludedWords"
               v-model="clearInformation.password"
@@ -133,7 +133,7 @@ export default {
   components: {
     'new-group': NewGroupVue,
     'upload-image': UploadImageVue,
-    'password-input': PasswordInput
+    PasswordInput
   },
   data () {
     return {

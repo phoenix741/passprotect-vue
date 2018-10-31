@@ -14,15 +14,15 @@ div(style="width: 400px; margin: auto;")
           data-vv-name="username",
           name="username",
           required)
-        password-input.mt-3(
+        PasswordInput.mt-3(
           ref="password"
           :label="$t('register.form.identity_password1.field')",
           :data-vv-as="$t('register.form.identity_password1.field')",
           v-model="password"
           :error-messages="errors.collect('password')",
           v-validate="'required|min:8'",
+          data-vv-name="password",
           name="password",
-          data-vv-name="password"
           required
         )
         v-text-field.mt-3(
@@ -60,7 +60,7 @@ export default {
   name: 'register',
   mixins: [AnalyticsMixin],
   components: {
-    'password-input': PasswordInput
+    PasswordInput
   },
   data () {
     return {
