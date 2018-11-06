@@ -1,5 +1,7 @@
 <template lang="pug">
 v-text-field(
+    :id="id"
+    :name="name"
     :label="label"
     :type="passwordVisibility ? 'text' : 'password'"
     loading
@@ -23,6 +25,8 @@ import zxcvbn from 'zxcvbn'
 export default {
   name: 'PasswordInput',
   props: {
+    id: String,
+    name: String,
     label: String,
     value: {
       type: String,

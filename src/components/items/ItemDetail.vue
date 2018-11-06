@@ -21,7 +21,7 @@ v-card
 
     v-container(grid-list-md)
       v-layout(wrap)
-        v-flex(xs12)
+        v-flex#group-select(xs12)
           v-select(
             :label="$t('item.form.group.field')",
             :data-vv-as="$t('item.form.group.field')",
@@ -32,6 +32,10 @@ v-card
             data-vv-name="group",
             name="group",
             required)
+            template(slot="item",slot-scope="data")
+              template(v-if="data.item !== null") {{ data.item }}
+              div.groupSelect(v-if="data.item === null")
+                span#empty-item(@click="addEmptyItem()") {{ $t('item.form.group.newItem') }}
 
         v-flex(xs12)
           v-text-field#label-input(
@@ -153,7 +157,7 @@ export default {
       query: getGroups,
       result ({ data }) {
         // Create the dialog element used for reactivity. If not the dialog will not work
-        data.groups.push(this.$t('item.form.group.newItem'))
+        data.groups.push(null)
       }
     }
   },
@@ -192,6 +196,9 @@ export default {
     },
     close () {
       this.$emit('close')
+    },
+    addEmptyItem () {
+      this.newGroupDlg = true
     }
   },
   computed: {
@@ -210,11 +217,6 @@ export default {
       immediate: true,
       async handler (val) {
         await this.decryptClearInformation(val)
-      }
-    },
-    'lineToModify.group': function (val) {
-      if (val === this.$t('item.form.group.newItem')) {
-        this.newGroupDlg = true
       }
     }
   }

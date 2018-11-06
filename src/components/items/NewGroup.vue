@@ -4,7 +4,7 @@ v-dialog(v-model="show",max-width="500px")
     v-card-title
       h2 {{ $t('item.form.group.dialog.title') }}
     v-card-text
-      v-text-field#newGroup(
+      v-text-field#new-group(
           :label="$t('item.form.group.dialog.label')"
           :data-vv-as="$t('item.form.group.dialog.label')",
           v-model="newGroup",
@@ -17,7 +17,7 @@ v-dialog(v-model="show",max-width="500px")
     v-card-actions
         v-spacer
         v-btn(color="primary",flat,@click="close") {{ $t('item.form.group.dialog.cancel') }}
-        v-btn(color="primary",flat,@click="addGroup") {{ $t('item.form.group.dialog.ok') }}
+        v-btn#create-group(color="primary",flat,@click="addGroup") {{ $t('item.form.group.dialog.ok') }}
 </template>
 
 <script type="text/babel">
