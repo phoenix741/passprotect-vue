@@ -103,7 +103,7 @@ v-card
               v-model="clearInformation.username")
 
           v-flex(xs12)
-            PasswordInput#password-input(
+            PasswordInput.password-input#password-input(
               :label="$t('item.form.password.field')",
               :words="passwordExcludedWords"
               v-model="clearInformation.password"

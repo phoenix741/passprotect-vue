@@ -69,6 +69,15 @@ module.exports = {
     browser
       .page.ItemsPage().addPassword()
 
+      .page.ItemPage().showPassword()
+      .page.ItemPage().assertPasswordProgression('test', 0)
+      .page.ItemPage().assertPasswordProgression('test test', 50)
+      .page.ItemPage().assertPasswordProgression('abcdef', 0)
+      .page.ItemPage().assertPasswordProgression('xyz', 0)
+      .page.ItemPage().assertPasswordProgression('xyz123', 25)
+      .page.ItemPage().assertPasswordProgression('xyz123@!abc', 75)
+      .page.ItemPage().assertPasswordProgression('FqYnmte5kYxNaD3R', 100)
+
       .page.ItemPage().fillInPassword(ELEMENT_PASSWORD_LABEL, ELEMENT_PASSWORD_USERNAME, ELEMENT_PASSWORD_PASSWORD, ELEMENT_PASSWORD_SITEURL, ELEMENT_PASSWORD_NOTES)
       .page.ItemPage().setGroup(ELEMENT_PASSWORD_GROUP)
       .page.ItemPage().submit()

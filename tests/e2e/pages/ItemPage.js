@@ -5,6 +5,9 @@ const WAIT_TIMEOUT = 5000
 module.exports = {
   elements: {
     card: '.detail-card',
+
+    form: 'form',
+
     label: '#label-input',
     notes: '#notes-input',
     groupSelect: '#group-select .v-icon',
@@ -16,6 +19,8 @@ module.exports = {
 
     username: '#username-input',
     password: '#password-input',
+    passwordProgress: '.password-input .v-progress-linear',
+    passwordVisibility: '.password-input .v-input__icon--append',
     siteurl: '#siteurl-input',
 
     nameOnCard: '#name-on-card-input',
@@ -51,6 +56,13 @@ module.exports = {
       return this.api
     },
 
+    showPassword () {
+      this
+        .waitForElementVisible('@passwordVisibility', WAIT_TIMEOUT)
+        .click('@passwordVisibility')
+      return this.api
+    },
+
     fillInPassword (label, username, password, siteUrl, notes) {
       this
         .waitForElementVisible('@label', WAIT_TIMEOUT)
@@ -63,6 +75,18 @@ module.exports = {
         .setValue('@siteurl', siteUrl)
         .waitForElementVisible('@notes', WAIT_TIMEOUT)
         .setValue('@notes', notes)
+      return this.api
+    },
+
+    assertPasswordProgression (password, progression) {
+      this
+        .waitForElementVisible('@password', WAIT_TIMEOUT)
+
+      this.api.execute('document.getElementById(\'password-input\').value = \'\'')
+
+      this
+        .setValue('@password', password)
+        .assert.attributeEquals('@passwordProgress', 'aria-valuenow', String(progression), `Password ${password} should show a progress of ${progression}`)
       return this.api
     },
 
