@@ -1,0 +1,11 @@
+bower_components
+node_modules
+.directory
+.dockerignore
+.drone.yml
+.editorconfig
+.env
+.eslintignore
+docker-compose*
+Dockerfile*
+dist

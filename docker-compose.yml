@@ -1,0 +1,13 @@
+version: '2'
+services:
+    nginx:
+        build:
+          context: ./
+          dockerfile: Dockerfile
+        image: phoenix741/passprotect-client:develop
+        environment:
+            - GRAPHQL_SERVER=passprotect.shadoware.org/api/graphql
+            - PIWIK_SITE_URL=//stats-demo.shadoware.org/
+            - PIWIK_SITE_ID=3
+        ports:
+            - '8080:80'
