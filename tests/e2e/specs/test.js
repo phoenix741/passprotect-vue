@@ -30,6 +30,8 @@ const ELEMENT_CARD_EXPIRY = '12/02'
 const ELEMENT_CARD_CODE = '1234'
 const ELEMENT_CARD_NOTE = 'Some notes for card'
 
+process.env.VUE_DEV_SERVER_URL = process.env.VUE_E2E_SERVER_URL || process.env.VUE_DEV_SERVER_URL
+
 module.exports = {
   'Starting the application, login page is shown': function (browser) {
     browser

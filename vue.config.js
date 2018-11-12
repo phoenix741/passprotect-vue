@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/graphql': {
-        target: 'http://localhost:4000',
+        target: process.env.PROXY_GRAPHQL_SERVER || 'http://localhost:4000',
         ws: true,
         changeOrigin: true
       }
