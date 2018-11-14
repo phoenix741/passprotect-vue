@@ -1,14 +1,11 @@
-.idea
 bower_components
-mongodb
 node_modules
 .directory
 .dockerignore
+.drone.yml
 .editorconfig
+.env
 .eslintignore
-.eslintrc.json
-.hgflow
-.hgignore
 docker-compose*
 Dockerfile*
-Makefile
+dist

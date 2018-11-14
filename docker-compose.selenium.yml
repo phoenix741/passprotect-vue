@@ -1,0 +1,29 @@
+version: '2'
+services:
+    e2e:
+        image: node:10
+        command: tail -f /dev/null
+        volumes:
+            - ./:/src
+        environment:
+            - PROXY_GRAPHQL_SERVER=http://nodejs:4000
+            - VUE_APP_PIWIK_ENABLED=false
+            - VUE_APP_GRAPHQL_HTTP=http://nodejs:4000
+            - VUE_APP_GRAPHQL_WS=ws://nodejs:4000
+            - VUE_E2E_SERVER_URL=http://e2e:8080
+
+    nodejs:
+        image: phoenix741/passprotect-server:develop
+        environment:
+            - MONGODB_HOST=mongodb://mongodb:27017/passprotect
+            - MONGODB_DATABASE=passprotect
+            - NODE_ENV=production
+            - DEBUG=App:*
+
+    selenium:
+        image: selenium/standalone-chrome
+        volumes:
+            - /dev/shm:/dev/shm
+
+    mongodb:
+        image: mongo:4

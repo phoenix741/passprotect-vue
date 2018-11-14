@@ -1,33 +1,28 @@
 pipeline:
     e2e:
         group: test
-        image: node:8
+        image: node:10
         commands:
             - npm install
-            - npm run e2e:docker
+            - cp nightwatch.e2e.json nightwatch.json
+            - npm run test:e2e
         environment:
-            - MONGODB_HOST=mongodb://mongodb:27017/passprotect
-            - MONGODB_DATABASE=passprotect
-            - HOST=e2e
+            - PROXY_GRAPHQL_SERVER=http://nodejs:4000
+            - VUE_APP_PIWIK_ENABLED=false
+            - VUE_APP_GRAPHQL_HTTP=http://nodejs:4000
+            - VUE_APP_GRAPHQL_WS=ws://nodejs:4000
+            - VUE_E2E_SERVER_URL=http://e2e:8080
 
     unit:
         group: test
-        image: node:8
+        image: node:10
         commands:
             - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
             - sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list'
             - apt update && apt install -y google-chrome-stable
 
             - npm install
-            - npm run unit
-
-    nodejs:
-        group: build
-        image: plugins/docker
-        repo: phoenix741/passprotect-server
-        secrets: [ docker_username, docker_password ]
-        tags: develop
-        dockerfile: Dockerfile.nodejs
+    #        - npm run test:unit
 
     nginx:
         group: build
@@ -35,11 +30,19 @@ pipeline:
         repo: phoenix741/passprotect-client
         secrets: [ docker_username, docker_password ]
         tags: develop
-        dockerfile: Dockerfile.nginx
+        dockerfile: Dockerfile
 
 services:
+    nodejs:
+        image: phoenix741/passprotect-server:develop
+        environment:
+            - MONGODB_HOST=mongodb://mongodb:27017/passprotect
+            - MONGODB_DATABASE=passprotect
+            - NODE_ENV=production
+            - DEBUG=App:*
+
     selenium:
         image: selenium/standalone-chrome
 
     mongodb:
-        image: mongo:3.6
+        image: mongo:4

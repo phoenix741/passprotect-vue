@@ -1,0 +1,1 @@
+{"__schema":{"types":[{"kind":"UNION","name":"RegisterUserResult","possibleTypes":[{"name":"User"},{"name":"Errors"}]},{"kind":"UNION","name":"CreateUpdateLineResult","possibleTypes":[{"name":"WalletLine"},{"name":"Errors"}]},{"kind":"UNION","name":"CreateSessionResult","possibleTypes":[{"name":"ConnectionInformation"},{"name":"Errors"}]}]}}

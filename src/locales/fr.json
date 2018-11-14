@@ -1,0 +1,175 @@
+{
+  "app": {
+    "title": "Passprotect",
+    "menu": {
+      "about": "A propos",
+      "export": "Exporter",
+      "logout": "Se déconnecter",
+      "my_account": "Mon compte",
+      "connect": "Se connecter",
+      "items": "Ma liste",
+      "print": "Imprimer"
+    },
+    "dialog": {
+      "close": "Fermer"
+    }
+  },
+  "list": {
+    "title": "Ma liste",
+    "search": "Rechercher ...",
+    "empty": "Liste vide, veuillez créer un nouvel élément à l'aide du bouton en bas à droite",
+    "type": {
+      "card": "Carte de paiement",
+      "password": "Mot de passe",
+      "text": "Général"
+    },
+    "progress": "Patientez s'il vous plait"
+  },
+  "item": {
+    "title_creation": "Création",
+    "title_modification": "Modification",
+		"title_visualisation": "Visualisation",
+    "form": {
+      "label": {
+        "field": "Titre du champ"
+      },
+			"group": {
+				"field": "Groupe",
+        "newItem": "Nouveau groupe",
+        "dialog": {
+          "title": "Nouveau groupe",
+          "label": "Nom du groupe",
+          "cancel": "Annuler",
+          "ok": "Ajouter"
+        }
+			},
+      "type": {
+        "field": "Type de carte",
+        "options": [
+          "VISA",
+          "Carte bleu",
+          "Mastercard",
+          "American Express",
+          "Maestro"
+        ]
+      },
+      "nameOnCard": {
+        "field": "Nom sur la carte"
+      },
+      "cardNumber": {
+        "field": "Numéro de carte"
+      },
+      "cvv": {
+        "field": "CVV"
+      },
+      "expiry": {
+        "field": "Date d'éxpiration"
+      },
+      "code": {
+        "field": "Code de la carte"
+      },
+      "username": {
+        "field": "Nom d'utilisateur"
+      },
+      "password": {
+        "field": "Mot de passe"
+      },
+      "passwordXzcvbn": {
+        "field": "Niveau de sécurité du mot de passe"
+      },
+      "siteUrl": {
+        "field": "Adresse du site"
+      },
+      "text": {
+        "field": "Texte"
+      },
+      "notes": {
+        "field": "Notes"
+      },
+      "button": {
+        "field": "Sauvegarder",
+        "generate": "Générer le mot de passe",
+        "addpicture": "Ajouter une image",
+        "clearpicture": "Effacer l'image"
+      }
+    }
+  },
+  "alert": {
+    "confirm_remove": {
+      "title": "Suppression ?",
+      "message": "Êtes-vous sur de vouloir supprimer \"{title}\" ?",
+      "agree": "Supprimer",
+      "disagree": "Annuler"
+    },
+    "validation": {
+      "title": "Impossible de soumettre votre formulaire"
+    },
+    "unknown_error": {
+      "title": "Erreur",
+      "message": "Un problème est survenu",
+      "close": "Fermer"
+    }
+  },
+  "about": {
+    "title": "A propos de Passprotect",
+    "copyright": "Passprotect est un outil qui permet de stocker mot de passe, carte de crédit, et toutes autres informations de facon crypté.",
+    "licence": "MIT Licence"
+  },
+  "terms": {
+    "title": "Conditions générales d'utilisation"
+  },
+  "login": {
+    "dialog": {
+      "title": "Se connecter à son compte",
+      "button": {
+        "connect": "Se connecter",
+        "noaccount": "Vous n'avez pas encore de compte ? ",
+        "signup": "Enregistrez-vous"
+      }
+    },
+    "form": {
+      "username": {
+        "field": "Votre nom d'utilisateur",
+        "help": {
+          "cantbeblank": "Le nom de l'utilisateur ne peut être vide.",
+          "invalid": "L'utilisateur ou le mot de passe sont incorrect.",
+          "unknown": "Une erreur est survenue lors de l'authentification de l'utilisateur."
+        }
+      },
+      "password": {
+        "field": "Votre mot de passe",
+        "help": {
+          "default": "Vous avez oublié votre mot de passe ...",
+          "cantbeblank": "Le mot de passe ne peut être vide."
+        }
+      }
+    }
+  },
+  "register": {
+    "form": {
+      "title": "Nouveau compte",
+      "identity_username": {
+        "field": "Nom d'utilisateur"
+      },
+      "identity_password1": {
+        "field": "Mot de passe"
+      },
+      "identity_password2": {
+        "field": "Mot de passe (encore)"
+      },
+      "validation": {
+        "field": "S'enregistrer"
+      },
+      "terms1": "En créant votre compte, vous approuvez",
+      "terms2": "les conditions générales d'utilisation.",
+      "already_registered": "Déjà enregistré?",
+      "signin": "Se connecter"
+    },
+    "flash": {
+      "user_created": "Votre compte a bien été enregistré"
+    }
+  },
+  "toolbar": {
+    "notlogged": "Non connecté"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "app": {
+    "title": "Passprotect",
+    "menu": {
+      "about": "About",
+      "export": "Export",
+      "logout": "Logout",
+      "my_account": "My account",
+      "connect": "Login",
+      "items": "Items",
+      "print": "Pring"
+    },
+    "dialog": {
+      "close": "Close"
+    }
+  },
+  "list": {
+    "title": "Items",
+    "search": "Search ...",
+    "empty": "Empty list, please create a new item with the float button",
+    "type": {
+      "card": "Payment card",
+      "password": "Password",
+      "text": "General"
+    },
+    "progress": "Please stand by"
+  },
+  "item": {
+    "title_creation": "Create",
+    "title_modification": "Modify",
+		"title_visualisation": "View",
+    "form": {
+      "label": {
+        "field": "Title of the field"
+      },
+			"group": {
+				"field": "Group",
+				"new": "Group (new)",
+        "newItem": "New group"
+			},
+      "type": {
+        "field": "Card type",
+        "options": [
+          "VISA",
+          "Carte bleu",
+          "Mastercard",
+          "American Express",
+          "Maestro"
+        ]
+      },
+      "nameOnCard": {
+        "field": "Card name"
+      },
+      "cardNumber": {
+        "field": "Card number"
+      },
+      "cvv": {
+        "field": "CVV"
+      },
+      "expiry": {
+        "field": "Expiry"
+      },
+      "code": {
+        "field": "Card code"
+      },
+      "username": {
+        "field": "User name"
+      },
+      "password": {
+        "field": "Password"
+      },
+      "passwordXzcvbn": {
+        "field": "Password security"
+      },
+      "siteUrl": {
+        "field": "Website"
+      },
+      "text": {
+        "field": "Text"
+      },
+      "notes": {
+        "field": "Notes"
+      },
+      "button": {
+        "field": "Save",
+				"generate": "Generate a password",
+        "addpicture": "Add a picture",
+        "clearpicture": "Clear the picture"
+      }
+    }
+  },
+  "alert": {
+    "confirm_remove": {
+      "title": "Remove ?",
+      "message": "Are you sure to delete \"{title}\" ?",
+      "agree": "Remove",
+      "disagree": "Cancel"
+    },
+    "validation": {
+      "title": "Can't submit the form"
+    },
+    "unknown_error": {
+      "title": "Error",
+      "message": "There is an error",
+      "close": "Close"
+    }
+  },
+  "about": {
+    "title": "About Passprotect",
+    "copyright": "Passprotect is a tool used to store password, credit card, or any other information (encrypted).",
+    "licence": "MIT Licence"
+  },
+  "terms": {
+    "title": "Terms and condition"
+  },
+  "login": {
+    "dialog": {
+      "title": "Sign in to your account",
+      "button": {
+        "connect": "Sign in",
+        "noaccount": "Don't have an account? ",
+        "signup": "Create an account"
+      }
+    },
+    "form": {
+      "username": {
+        "field": "Your username",
+        "help": {
+          "cantbeblank": "The username can't be empty.",
+          "invalid": "The username or the password are invalid.",
+          "unknown": "There is an authentification error."
+        }
+      },
+      "password": {
+        "field": "Your password",
+        "help": {
+          "default": "Do you have forgotten your password ... ?",
+          "cantbeblank": "The password can't be empty."
+        }
+      }
+    }
+  },
+  "register": {
+    "form": {
+      "title": "New account",
+      "identity_username": {
+        "field": "Name of the user"
+      },
+      "identity_password1": {
+        "field": "Password"
+      },
+      "identity_password2": {
+        "field": "Password (again)"
+      },
+      "validation": {
+        "field": "Signup"
+      },
+      "terms1": "By signing up, you agree to the",
+      "terms2": "terms and conditions.",
+      "already_registered": "Already registered?",
+      "signin": "Log in"
+    },
+    "flash": {
+      "user_created": "Your account have been saved ..."
+    }
+  },
+  "toolbar": {
+    "notlogged": "Not connected"
+  }
+}
