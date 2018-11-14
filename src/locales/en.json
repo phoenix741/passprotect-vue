@@ -8,7 +8,7 @@
       "my_account": "My account",
       "connect": "Login",
       "items": "Items",
-      "print": "Pring"
+      "print": "Print"
     },
     "dialog": {
       "close": "Close"
@@ -31,7 +31,7 @@
 		"title_visualisation": "View",
     "form": {
       "label": {
-        "field": "Title of the field"
+        "field": "Field title"
       },
 			"group": {
 				"field": "Group",
@@ -58,7 +58,7 @@
         "field": "CVV"
       },
       "expiry": {
-        "field": "Expiry"
+        "field": "Expiration date"
       },
       "code": {
         "field": "Card code"
@@ -70,7 +70,7 @@
         "field": "Password"
       },
       "passwordXzcvbn": {
-        "field": "Password security"
+        "field": "Password security level"
       },
       "siteUrl": {
         "field": "Website"
@@ -161,7 +161,7 @@
       "signin": "Log in"
     },
     "flash": {
-      "user_created": "Your account have been saved ..."
+      "user_created": "Your account has been saved ..."
     }
   },
   "toolbar": {
