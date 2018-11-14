@@ -95,9 +95,9 @@ export default {
       return this.lines
         .filter(line => !searchFilter || searchFilter.test(line.label) || searchFilter.test(line.group))
         .sort((l1, l2) => {
-          const result = l1.group.localeCompare(l2.group)
+          const result = l1.group && l1.group.localeCompare(l2.group)
           if (result === 0) {
-            return l1.label.localeCompare(l2.label)
+            return l1.label && l1.label.localeCompare(l2.label)
           }
           return result
         })

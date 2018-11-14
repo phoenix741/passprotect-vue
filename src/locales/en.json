@@ -35,8 +35,13 @@
       },
 			"group": {
 				"field": "Group",
-				"new": "Group (new)",
-        "newItem": "New group"
+        "newItem": "New group",
+        "dialog": {
+          "title": "New group",
+          "label": "Group name",
+          "cancel": "Cancel",
+          "ok": "Add"
+        }
 			},
       "type": {
         "field": "Card type",
