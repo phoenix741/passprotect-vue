@@ -1,5 +1,9 @@
 module.exports = {
   baseUrl: '',
+
+  pwa: {
+    themeColor: '#1976d2'
+  },
   devServer: {
     proxy: {
       '/graphql': {
