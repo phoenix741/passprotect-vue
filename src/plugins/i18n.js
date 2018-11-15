@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
-let locale = navigator.language
+let locale = (navigator.language || '').split('-')[0]
 
 Vue.use(VueI18n)
 
