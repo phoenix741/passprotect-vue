@@ -13,6 +13,7 @@
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <access origin="*" />
+    <access origin="https://fonts.googleapis.com/" />
     <access origin="https://stats.shadoware.org" />
     <access origin="https://passprotect.shadoware.org" />
     <access origin="wss://passprotect.shadoware.org" />
