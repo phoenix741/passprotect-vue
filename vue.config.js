@@ -2,7 +2,20 @@ module.exports = {
   baseUrl: '',
 
   pwa: {
-    themeColor: '#1976d2'
+    themeColor: '#1976d2',
+    workboxOptions: {
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/fonts.googleapis.com\//,
+          handler: 'cacheFirst'
+        },
+        {
+          urlPattern: /^https:\/\/fonts.gstatic.com\//,
+          handler: 'cacheFirst'
+        }
+      ],
+      navigateFallback: '/index.html'
+    }
   },
   devServer: {
     proxy: {

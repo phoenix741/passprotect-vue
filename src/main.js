@@ -1,13 +1,12 @@
-import '@babel/polyfill'
 import Vue from 'vue'
 import veeValidate from './plugins/vee-validate'
 import './plugins/vuetify'
-import router from './router'
-import './registerServiceWorker'
-import { createProvider } from './plugins/vue-apollo'
 import App from './App.vue'
+import router from './router'
+import { createProvider } from './plugins/vue-apollo'
 import i18n from './plugins/i18n'
 import VueCordova from 'vue-cordova'
+import './registerServiceWorker'
 
 (async function () {
   await veeValidate()
