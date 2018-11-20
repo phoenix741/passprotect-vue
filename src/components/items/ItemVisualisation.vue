@@ -139,7 +139,6 @@ div
 
 <script type="text/babel">
 import copy from 'clipboard-copy'
-import { SESSION } from '../user/UserService'
 import getLine from './getLine.gql'
 import AnalyticsMixin from '../../utils/piwik'
 import { cardTypeMapping, decryptLine } from './ItemCryptedService'
@@ -162,14 +161,8 @@ export default {
       copy(label)
     },
     async decryptClearInformation (val) {
-      this.clearInformation = await decryptLine(val)
+      this.clearInformation = await decryptLine(this.$store.state.user.clearKey, val)
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    if (!SESSION.authenticated) {
-      return next('/login', { replace: true })
-    }
-    return next()
   },
   computed: {
     cardType () {

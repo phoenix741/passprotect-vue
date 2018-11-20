@@ -4,7 +4,6 @@ item-detail(v-bind:line="line",@close="close()")
 
 <script type="text/babel">
 import ItemDetail from './ItemDetail.vue'
-import { SESSION } from '../user/UserService'
 import AnalyticsMixin from '../../utils/piwik'
 
 export default {
@@ -28,12 +27,6 @@ export default {
     close () {
       this.$router.go(-1)
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    if (!SESSION.authenticated) {
-      return next('/login', { replace: true })
-    }
-    return next()
   }
 }
 </script>

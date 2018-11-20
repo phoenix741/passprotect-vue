@@ -1,7 +1,5 @@
 /* global _paq */
 
-import { SESSION } from '../components/user/UserService'
-
 export default {
   created () {
     this.piwikEnable = JSON.parse(process.env.VUE_APP_PIWIK_ENABLED)
@@ -22,7 +20,7 @@ export default {
 
       if (this.piwikEnable) {
         const timeMs = (new Date()).getTime() - this.startGenerationTimeMs
-        trackPageView(this.$route.path, document.title, SESSION.username, timeMs)
+        trackPageView(this.$route.path, document.title, this.$store.state.user.username, timeMs)
       }
     }
   }

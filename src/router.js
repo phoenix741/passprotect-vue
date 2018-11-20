@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store/index'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: process.env.CORDOVA_PLATFORM ? 'hash' : 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -60,3 +61,12 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'login' && to.name !== 'register' && !store.state.user.authenticated) {
+    return next('/login', { replace: true })
+  }
+  return next()
+})
+
+export default router

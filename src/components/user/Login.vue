@@ -32,7 +32,6 @@ div(style="width: 400px; margin: auto;")
 </template>
 
 <script type="text/babel">
-import { login } from './UserService'
 import AnalyticsMixin from '../../utils/piwik'
 
 export default {
@@ -53,7 +52,7 @@ export default {
         return
       }
 
-      await login(this, { username: this.username, password: this.password })
+      await this.$store.dispatch('user/login', { creds: { username: this.username, password: this.password }, $apollo: this.$apollo })
     }
   }
 }

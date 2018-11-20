@@ -51,7 +51,6 @@ div(style="width: 400px; margin: auto;")
 </template>
 
 <script type="text/babel">
-import { signup } from './UserService'
 import AnalyticsMixin from '../../utils/piwik'
 import PasswordInput from '../shared/PasswordInput.vue'
 
@@ -77,7 +76,7 @@ export default {
         return
       }
 
-      signup(this, { username: this.username, password: this.password })
+      this.$store.dispatch('user/signup', { creds: { username: this.username, password: this.password }, $apollo: this.$apollo })
     }
   }
 }

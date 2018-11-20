@@ -40,9 +40,16 @@ div
                     v-btn.cancel-btn.green--text.darken-1(flat="flat",ripple,v-on:click="dialog['remove' + line._id] = false") {{ $t('alert.confirm_remove.disagree') }}
                     v-btn.delete-btn.green--text.darken-1(flat="flat",ripple,v-on:click="remove(line)") {{ $t('alert.confirm_remove.agree') }}
           v-divider(:inset="index < lines.length - 1",v-if="index < lines.length - 1 || indexGroup != groupCount - 1")
-      v-list-tile(v-if="lines.length == 0")
+      v-list-tile(v-if="!hasError && !isLoading && lines.length == 0")
         v-list-tile-content
           v-list-tile-title.text-xs-center {{ $t('list.empty') }}
+      v-list-tile(v-if="isLoading && lines.length == 0")
+        v-list-tile-content
+          v-list-tile-title.text-xs-center
+            v-progress-circular(:indeterminate="true",color="primary")
+      v-list-tile(v-if="hasError && lines.length == 0")
+        v-list-tile-content
+          v-list-tile-title.text-xs-center {{ $t('list.offline') }}
 
       v-speed-dial(:bottom="true",:right="true",:fixed="true")
         v-btn#items-add-button.red.darken-2(slot="activator",dark,fab,hover)
@@ -63,14 +70,13 @@ div
 </template>
 
 <script type="text/babel">
-import { SESSION, logout } from '../user/UserService'
 import { removeLine, exportLinesAsCsv } from './ItemService'
 import { cardTypeMapping } from './ItemCryptedService'
 import { saveLinesAsCsv } from './ItemServiceCordova'
-import getLines from './getLines.gql'
 import { debounce } from '../../utils/lodash'
 import AnalyticsMixin from '../../utils/piwik'
 import ItemCreation from './ItemCreation'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'items',
@@ -85,35 +91,25 @@ export default {
       showOptions: false,
       drawer: true,
       dialog: {},
-      progressDialog: false,
-      lines: []
+      progressDialog: false
     }
   },
   computed: {
+    ...mapState({
+      lines: state => state.item.lines,
+      isLoading: state => state.item.loading
+    }),
+    ...mapGetters(['hasError']),
     linesByGroup () {
-      const searchFilter = !!this.q && new RegExp(this.q)
-      return this.lines
-        .filter(line => !searchFilter || searchFilter.test(line.label) || searchFilter.test(line.group))
-        .sort((l1, l2) => {
-          const result = l1.group && l1.group.localeCompare(l2.group)
-          if (result === 0) {
-            return l1.label && l1.label.localeCompare(l2.label)
-          }
-          return result
-        })
-        .reduce((acc, line) => {
-          acc[line.group] = acc[line.group] || []
-          acc[line.group].push(line)
-          return acc
-        }, {})
+      return this.$store.getters['item/linesByGroup'](this.q)
     },
     groupCount () {
-      return Object.keys(this.linesByGroup || {}).length
+      return this.$store.getters['item/groupCount'](this.q)
     }
   },
   methods: {
     async handleLogout () {
-      await logout(this)
+      this.$store.dispatch('user/logout', { $apollo: this.$apollo })
     },
     async handleExport () {
       try {
@@ -153,24 +149,16 @@ export default {
     cardType (line) {
       line = line || {}
       return cardTypeMapping[line.type || 'text']
+    },
+    async fetchData () {
+      await this.$store.dispatch('item/fetchItems', { $apollo: this.$apollo })
+      this.$store.state.item.lines.forEach((line, index) => {
+        this.$set(this.dialog, 'remove' + index, false)
+      })
     }
   },
-  beforeRouteEnter (to, from, next) {
-    if (!SESSION.authenticated) {
-      return next('/login', { replace: true })
-    }
-    return next()
-  },
-  apollo: {
-    lines: {
-      query: getLines,
-      result ({ data }) {
-        // Create the dialog element used for reactivity. If not the dialog will not work
-        (data.lines || []).forEach((line, index) => {
-          this.$set(this.dialog, 'remove' + index, false)
-        })
-      }
-    }
+  created () {
+    this.fetchData()
   }
 }
 </script>

@@ -18,6 +18,7 @@
     "title": "Items",
     "search": "Search ...",
     "empty": "Empty list, please create a new item with the float button",
+    "offline": "Try again later, the connection is unavailable",
     "type": {
       "card": "Payment card",
       "password": "Password",

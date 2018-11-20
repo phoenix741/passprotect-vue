@@ -18,6 +18,7 @@
     "title": "Ma liste",
     "search": "Rechercher ...",
     "empty": "Liste vide, veuillez créer un nouvel élément à l'aide du bouton en bas à droite",
+    "offline": "Connection impossible, veuillez re-essayer plus tard",
     "type": {
       "card": "Carte de paiement",
       "password": "Mot de passe",

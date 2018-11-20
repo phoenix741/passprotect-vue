@@ -1,5 +1,5 @@
 module.exports = {
-  baseUrl: '',
+  baseUrl: (process.env.npm_lifecycle_event || 'serve').indexOf('cordova') === 0 ? '' : '/',
 
   pwa: {
     themeColor: '#1976d2',

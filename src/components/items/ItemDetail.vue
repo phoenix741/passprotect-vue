@@ -169,7 +169,7 @@ export default {
       }
 
       const line = pick(this.lineToModify, ['_id', 'type', 'label', 'group', 'logo', '_rev'])
-      line.encryption = await encryptLine(this.clearInformation)
+      line.encryption = await encryptLine(this.$store.state.user.clearKey, this.clearInformation)
 
       await updateLine(this, line)
       this.close()
@@ -192,7 +192,7 @@ export default {
       if (!val.type) {
         val = { type: 'text' }
       }
-      this.clearInformation = await decryptLine(val)
+      this.clearInformation = await decryptLine(this.$store.state.user.clearKey, val)
     },
     close () {
       this.$emit('close')
