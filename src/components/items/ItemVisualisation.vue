@@ -5,6 +5,23 @@ div
       v-icon arrow_back
     v-toolbar-title.ml-0.pl-3
       span#title-label {{ $t(cardType.label) }}
+    v-spacer
+    v-menu(bottom,right,offset-y)
+      v-btn#menu(slot="activator",dark,icon)
+        v-icon more_vert
+      v-list
+        v-dialog(v-model="removeDialog" max-width="500px")
+          v-list-tile.item-delete-btn(slot="activator")
+            v-list-tile-title {{ $t('item.form.button.delete') }}
+          v-card
+            v-card-title
+              .headline {{ $t('alert.confirm_remove.title') }}
+            v-card-text {{ $t('alert.confirm_remove.message', {title: line.label}) }}
+            v-card-actions
+              v-spacer
+              v-btn.cancel-btn.green--text.darken-1(flat="flat",ripple,v-on:click="removeDialog = false") {{ $t('alert.confirm_remove.disagree') }}
+              v-btn.delete-btn.green--text.darken-1(flat="flat",ripple,v-on:click="remove(line)") {{ $t('alert.confirm_remove.agree') }}
+
   v-content
     v-layout.image(v-if="!!src",align-center,justify-center)
       img(:src="src")
@@ -138,6 +155,7 @@ div
 </template>
 
 <script type="text/babel">
+import { removeLine } from './ItemService'
 import copy from 'clipboard-copy'
 import getLine from './getLine.gql'
 import AnalyticsMixin from '../../utils/piwik'
@@ -153,7 +171,8 @@ export default {
       title: this.$t('item.title_visualisation'),
       line: {},
       clearInformation: {},
-      editDialog: false
+      editDialog: false,
+      removeDialog: false
     }
   },
   methods: {
@@ -162,6 +181,11 @@ export default {
     },
     async decryptClearInformation (val) {
       this.clearInformation = await decryptLine(this.$store.state.user.clearKey, val)
+    },
+    remove (line) {
+      this.removeDialog = false
+      removeLine(this, line._id)
+      this.$router.go(-1)
     }
   },
   computed: {

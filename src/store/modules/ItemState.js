@@ -1,4 +1,4 @@
-import { fetchItems } from '../../services/ItemService'
+import { fetchItems, filterLines, groupLineByGroup } from '../../services/ItemService'
 
 export default {
   namespaced: true,
@@ -28,23 +28,7 @@ export default {
   },
   getters: {
     linesByGroup (state) {
-      return q => {
-        const searchFilter = !!q && new RegExp(q)
-        return state.lines
-          .filter(line => !searchFilter || searchFilter.test(line.label) || searchFilter.test(line.group))
-          .sort((l1, l2) => {
-            const result = l1.group && l1.group.localeCompare(l2.group)
-            if (result === 0) {
-              return l1.label && l1.label.localeCompare(l2.label)
-            }
-            return result
-          })
-          .reduce((acc, line) => {
-            acc[line.group] = acc[line.group] || []
-            acc[line.group].push(line)
-            return acc
-          }, {})
-      }
+      return q => groupLineByGroup(filterLines(state.lines, q))
     },
     groupCount (state, getters) {
       return q => Object.keys(getters.linesByGroup(q) || {}).length

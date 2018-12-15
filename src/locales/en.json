@@ -91,7 +91,8 @@
         "field": "Save",
 				"generate": "Generate a password",
         "addpicture": "Add a picture",
-        "clearpicture": "Clear the picture"
+        "clearpicture": "Clear the picture",
+        "delete": "Remove"
       }
     }
   },
