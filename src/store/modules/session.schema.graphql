@@ -1,0 +1,29 @@
+type LocalSession {
+  "The username connected on the computer"
+  username: String
+  "The decrypted master key, that is used to decrypt all objects"
+  masterKey: String
+  "Authentification token used with the server to ensure that the connection is open"
+  authentificationToken: String
+}
+
+input SessionInput {
+  "The username"
+  username: String!
+  "The authentification token"
+  authentificationToken: String!
+  "The master key"
+  masterKey: String!
+}
+
+extend type Query {
+  "Indicate if there is a persisted local state"
+  localState: Boolean!
+  "Session of the user"
+  localSession: LocalSession!
+}
+
+extend type Mutation {
+  "Register a new session"
+  registerSession(input: SessionInput!): Boolean
+}

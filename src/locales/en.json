@@ -18,6 +18,7 @@
     "title": "Items",
     "search": "Search ...",
     "empty": "Empty list, please create a new item with the float button",
+    "offline": "Try again later, the connection is unavailable",
     "type": {
       "card": "Payment card",
       "password": "Password",
@@ -87,10 +88,12 @@
         "field": "Notes"
       },
       "button": {
+        "addgroup": "Add a new group",
         "field": "Save",
 				"generate": "Generate a password",
         "addpicture": "Add a picture",
-        "clearpicture": "Clear the picture"
+        "clearpicture": "Clear the picture",
+        "delete": "Remove"
       }
     }
   },
@@ -117,6 +120,59 @@
   },
   "terms": {
     "title": "Terms and condition"
+  },
+  "onboarding": {
+    "title": "Welcome",
+    "description": "Passprotect allows you to store your sensitive data and manage it. Keep control of your passwords without losing security.",
+    "btn_start": "Get started",
+    "finish": "Finish",
+    "synchronization_title": "Synchronization",
+    "synchronization_description": "Do you want to synchronize your sensitive data with all of your devices?",
+    "synchronization_nothanks": "No thanks",
+    "synchronization_signin": "Login",
+    "synchronization_signup": "Signup",
+    "synchronization_warning_title": "Warning !",
+    "synchronization_warning": "If you do not enable synchronization, you must enable the persistence on the device.",
+    "synchronization_warning_continue": "Continue",
+    "synchronization_warning_stop": "Cancel",
+    "persistence_title": "Persistence",
+    "persistence_description": "Would you like to persevere your sensitive data on this device? (You must trust this device)",
+    "persistence_yes": "Yes",
+    "persistence_no": "No",
+    "enjoy_title": "Enjoy",
+    "enjoy_description": "The application is activated. All you have to do is save your passwords each time you visit a new site.",
+    "enjoy_button": "Start",
+    "title_activation": "Customization of the application",
+    "activation": "Activation",
+    "persist_flag": "Persist on this device.",
+    "persist_flag_subtitle": "You must have absolute confidence in this device.",
+    "sync_flag": "Synchronize with a remote server.",
+    "sync_flag_subtitle": "So that your data is accessible from anywhere.",
+    "define_pin": "Define a password",
+    "define_pin_description": "Define a password to protect data stored in this device"
+  },
+  "lock": {
+    "title": "Lock",
+    "description": "In order to lock access to your sensitive data on this device, you must set a password that will be used to encrypt it.",
+    "unlock": "",
+    "identity_password1": {
+      "field": "Password"
+    },
+    "identity_password2": {
+      "field": "Password (again)"
+    },
+    "validation": {
+      "field": "Lock"
+    }
+  },
+  "unlock": {
+    "title": "Unlock your sensitive data",
+    "identity_password": {
+      "field": "Password"
+    },
+    "validation": {
+      "field": "Unlock"
+    }
   },
   "login": {
     "dialog": {
@@ -171,5 +227,21 @@
   },
   "toolbar": {
     "notlogged": "Not connected"
+  },
+  "error": {
+    "user": {
+      "404": {
+        "userNotFound": "The username or the password are invalid."
+      },
+      "401": {
+        "username": "The username can't be empty.",
+        "password": "The password can't be empty."
+      }
+    },
+    "line": {
+      "404": {
+        "lineNotFound": "Ligne non trouvée"
+      }
+    }
   }
 }

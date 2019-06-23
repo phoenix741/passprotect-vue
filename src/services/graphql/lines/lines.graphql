@@ -1,0 +1,7 @@
+#import "./line.fragment.graphql"
+
+query getLines {
+  lines {
+    ...LineFragment
+  }
+}

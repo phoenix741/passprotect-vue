@@ -1,0 +1,3 @@
+mutation addMenu($input: MenuItemInput!) {
+  addMenu(input: $input) @client
+}

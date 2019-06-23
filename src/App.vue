@@ -1,4 +1,5 @@
 <template lang="pug">
-  v-app
-    router-view
+v-app
+  router-view(name="toolbar")
+  router-view
 </template>

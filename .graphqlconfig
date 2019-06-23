@@ -1,0 +1,10 @@
+{
+  "schemaPath": "schema.graphql",
+  "includes": ["src/store/**/*.graphql"],
+  "extensions": {
+    "endpoints": {
+      "dev": "http://localhost:4000/graphql",
+      "prod": "http://passprotect.shadoware.org/graphql"
+    }
+  }
+}

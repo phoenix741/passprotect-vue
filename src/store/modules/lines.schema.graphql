@@ -1,0 +1,65 @@
+enum CardTypeEnum {
+  card
+  password
+  text
+}
+
+type ClearWalletLine {
+  text: String
+  cardType: String
+  nameOnCard: String
+  cardNumber: String
+  cvv: String
+  expiry: String
+  code: String
+  username: String
+  password: String
+  siteUrl: String
+  notes: String
+}
+
+extend type WalletLine {
+  content: ClearWalletLine!
+  typeLabel: String!
+  typeColor: String!
+  typeIcon: String!
+}
+
+input ClearWalletLineInput {
+  text: String
+  cardType: String
+  nameOnCard: String
+  cardNumber: String
+  cvv: String
+  expiry: String
+  code: String
+  username: String
+  password: String
+  siteUrl: String
+  notes: String
+}
+
+input ClearLineUpdateInput {
+  _id: ObjectID!
+  type: LineTypeEnum!
+  label: String!
+  group: String!
+  logo: String
+  content: ClearWalletLineInput!
+}
+
+input ClearLineCreateInput {
+  type: LineTypeEnum!
+  label: String!
+  group: String!
+  logo: String
+  content: ClearWalletLineInput!
+}
+
+extend type Mutation {
+  "Encrypt and create a clear line"
+  createClearLine(input: ClearLineCreateInput!): UpdateLineResult!
+
+  "Encrypt and update a clear line"
+  updateClearLine(input: ClearLineUpdateInput!): UpdateLineResult!
+}
