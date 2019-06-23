@@ -1,0 +1,3 @@
+mutation registerSession($input: SessionInput!) {
+  registerSession(input: $input) @client
+}

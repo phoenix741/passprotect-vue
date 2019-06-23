@@ -1,10 +1,7 @@
 crypto:
-    pbkdf2:
-        iterations: 1000
-        keylen: 256
-        ivlen: 96
-        digest: 'sha512'
-    cypherIv:
-        algorithm: 'aes-256-gcm'
-    ivSize: 64
+    digest: 'sha512'
+    algorithm: 'aes-256-gcm'
+    iterations: 1000
+    ivSize: 96
+    saltSize: 64
     keySize: 256

@@ -1,0 +1,16 @@
+#import "./line.fragment.graphql"
+
+mutation updateClearLine($input: ClearLineUpdateInput!) {
+  updateClearLine(input: $input) @client {
+    __typename
+    ... on WalletLine {
+      ...LineFragment
+    }
+    ... on Errors {
+      errors {
+        fieldName
+        message
+      }
+    }
+  }
+}

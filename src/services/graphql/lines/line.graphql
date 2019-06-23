@@ -1,0 +1,7 @@
+#import "./line.fragment.graphql"
+
+query getLine($id: String!) {
+  line(id: $id) {
+    ...LineFragment
+  }
+}

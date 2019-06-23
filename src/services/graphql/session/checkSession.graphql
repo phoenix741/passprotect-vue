@@ -1,0 +1,6 @@
+query checkSession {
+  localState @client
+  localSession @client {
+    username
+  }
+}

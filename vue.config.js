@@ -1,19 +1,4 @@
 module.exports = {
-  baseUrl: '',
-
-  pwa: {
-    themeColor: '#1976d2'
-  },
-  devServer: {
-    proxy: {
-      '/graphql': {
-        target: process.env.PROXY_GRAPHQL_SERVER || 'http://localhost:4000',
-        ws: true,
-        changeOrigin: true
-      }
-    }
-  },
-
   pluginOptions: {
     i18n: {
       locale: 'fr',
@@ -21,7 +6,9 @@ module.exports = {
       localeDir: 'locales',
       enableInSFC: false
     },
-    cordovaPath: 'src-cordova'
+    apollo: {
+      typescript: true
+    }
   },
 
   chainWebpack: config => {
@@ -34,7 +21,5 @@ module.exports = {
       .use('yaml-loader')
       .loader('yaml-loader')
       .end()
-  },
-
-  productionSourceMap: false
+  }
 }

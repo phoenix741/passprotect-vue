@@ -18,6 +18,7 @@
     "title": "Ma liste",
     "search": "Rechercher ...",
     "empty": "Liste vide, veuillez créer un nouvel élément à l'aide du bouton en bas à droite",
+    "offline": "Connection impossible, veuillez re-essayer plus tard",
     "type": {
       "card": "Carte de paiement",
       "password": "Mot de passe",
@@ -87,10 +88,12 @@
         "field": "Notes"
       },
       "button": {
+        "addgroup": "Ajouter un group",
         "field": "Sauvegarder",
         "generate": "Générer le mot de passe",
         "addpicture": "Ajouter une image",
-        "clearpicture": "Effacer l'image"
+        "clearpicture": "Effacer l'image",
+        "delete": "Supprimer"
       }
     }
   },
@@ -112,11 +115,63 @@
   },
   "about": {
     "title": "A propos de Passprotect",
-    "copyright": "Passprotect est un outil qui permet de stocker mot de passe, carte de crédit, et toutes autres informations de facon cryptée.",
+    "copyright": "Passprotect vous permet de stocker vos données sensibles.",
     "licence": "MIT Licence"
   },
   "terms": {
     "title": "Conditions générales d'utilisation"
+  },
+  "onboarding": {
+    "title": "Bienvenue",
+    "description": "Passprotect vous permet de stocker vos données sensibles et de les gérer. Garder le contrôle de vos mots de passes sans perdre en sécurité.",
+    "btn_start": "Démarrer",
+    "finish": "Terminer",
+    "synchronization_title": "Synchronisation",
+    "synchronization_description": "Souhaitez-vous synchroniser vos données sensibles avec l'ensemble de vos dispositif ?",
+    "synchronization_nothanks": "Non merci",
+    "synchronization_signin": "Se connecter",
+    "synchronization_signup": "S'enregistrer",
+    "synchronization_warning_title": "Attention !",
+    "synchronization_warning": "Si vous n'activez pas la synchronisation, vous devez absolument activez la persistence sur le dispositif.",
+    "synchronization_warning_continue": "Continuer",
+    "synchronization_warning_stop": "Annuler",
+    "persistence_title": "Persistence",
+    "persistence_description": "Souhaitez-vous persistez vos données sensible sur ce dispositif ? (Vous devez avoir confiance en ce dispositif)",
+    "persistence_yes": "Oui",
+    "persistence_no": "Non",
+    "enjoy_title": "A vous de jouer !",
+    "enjoy_description": "L'application est maintenant activée. Il ne vous reste plus qu'à enregistrer vos mots de passe à chaque fois que vous visitez un nouveau site.",
+    "enjoy_button": "Démarrer",
+    "activation": "Activation",
+    "title_activation": "Paramètrons l'application",
+    "persist_flag": "Persister sur ce dispositif",
+    "persist_flag_subtitle": "Il faut que vous ayez absolument confiance en ce dispositif",
+    "sync_flag": "Synchroniser avec un serveur distant",
+    "sync_flag_subtitle": "Pour que vos données soit accessible depuis n'importe où.",
+    "define_pin": "Définissez un mot de passe",
+    "define_pin_description": "Définissez un mot de passe pour protéger vos données sur le dispositif."
+  },
+  "lock": {
+    "title": "Vérouiller",
+    "description": "Afin de vérouiller l'accès à vos données sensibles sur ce périphérique, vous devez définir un mot de passe qui sera utilisé pour les chiffrer.",
+    "identity_password1": {
+      "field": "Mot de passe"
+    },
+    "identity_password2": {
+      "field": "Mot de passe (encore)"
+    },
+    "validation": {
+      "field": "Vérouiller"
+    }
+  },
+  "unlock": {
+    "title": "Dévérouiller vos données sensibles",
+    "identity_password": {
+      "field": "Mot de passe"
+    },
+    "validation": {
+      "field": "Dévérouiller"
+    }
   },
   "login": {
     "dialog": {
@@ -171,5 +226,21 @@
   },
   "toolbar": {
     "notlogged": "Non connecté"
+  },
+  "error": {
+    "user": {
+      "404": {
+        "userNotFound": "Utilisateur {userId} non trouvé ou mot de passe invalide"
+      },
+      "401": {
+        "username": "Le login est obligatoire",
+        "password": "Le mot de passe est obligatoire"
+      }
+    },
+    "line": {
+      "404": {
+        "lineNotFound": "Ligne {lineId} non trouvée"
+      }
+    }
   }
 }

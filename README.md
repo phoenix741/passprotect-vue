@@ -1,4 +1,4 @@
-# passprotect
+# passprotect-vue2
 
 ## Project setup
 ```
@@ -15,9 +15,19 @@ npm run serve
 npm run build
 ```
 
+### Run your tests
+```
+npm run test
+```
+
 ### Lints and fixes files
 ```
 npm run lint
+```
+
+### Run your end-to-end tests
+```
+npm run test:e2e
 ```
 
 ### Run your unit tests
@@ -25,7 +35,5 @@ npm run lint
 npm run test:unit
 ```
 
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

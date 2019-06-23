@@ -1,0 +1,16 @@
+#import "./line.fragment.graphql"
+
+mutation createLine($input: WalletLineCreateInput!) {
+  createLine(input: $input) {
+    __typename
+    ... on WalletLine {
+      ...LineFragment
+    }
+    ... on Errors {
+      errors {
+        fieldName
+        message
+      }
+    }
+  }
+}

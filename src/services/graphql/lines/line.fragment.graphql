@@ -1,0 +1,30 @@
+fragment LineFragment on WalletLine {
+  _id
+  type
+  typeLabel @client
+  typeColor @client
+  typeIcon @client
+  label
+  group
+  logo
+  encryption {
+    salt
+    iv
+    content
+    authTag
+  }
+
+  content @client {
+    text
+    cardType
+    nameOnCard
+    cardNumber
+    cvv
+    expiry
+    code
+    username
+    password
+    siteUrl
+    notes
+  }
+}

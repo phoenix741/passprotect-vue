@@ -1,0 +1,7 @@
+query getLocalSession {
+  localSession @client {
+    username
+    authentificationToken
+    masterKey
+  }
+}

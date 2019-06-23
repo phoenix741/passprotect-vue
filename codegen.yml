@@ -1,0 +1,18 @@
+overwrite: true
+schema:
+    - "http://localhost:4000/graphql"
+    - "src/store/modules/toolbar.schema.graphql"
+    - "src/store/modules/session.schema.graphql"
+    - "src/store/modules/lines.schema.graphql"
+documents: "src/**/*.graphql"
+config:
+    scalars:
+        Buffer: string
+        Date: string
+        ObjectID: string
+generates:
+  src/generated/graphql.ts:
+    - typescript
+    - typescript-operations
+  src/generated/introspection-result.ts:
+    - fragment-matcher

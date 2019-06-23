@@ -1,0 +1,37 @@
+type MenuItem {
+  id: ID!
+  title: String
+  router: String
+}
+
+type Toolbar {
+  title: String
+  searchEnabled: Boolean
+  actions: [MenuItem]!
+  menu: [MenuItem]!
+}
+
+input MenuItemInput {
+  id: ID!
+  title: String
+  router: String
+}
+
+input ToolbarInput {
+  title: String
+  searchEnabled: Boolean
+  actions: [MenuItemInput]
+  menu: [MenuItemInput]
+}
+
+extend type Query {
+  toolbar: Toolbar
+}
+
+extend type Mutation {
+  defineToolbar(input: ToolbarInput!): Boolean
+
+  addMenu(input: MenuItemInput!): Boolean
+
+  addAction(input: MenuItemInput!): Boolean
+}

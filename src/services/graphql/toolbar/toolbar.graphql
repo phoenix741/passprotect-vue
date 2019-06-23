@@ -1,0 +1,16 @@
+query getToolbar {
+  toolbar @client {
+    title
+    searchEnabled
+    actions {
+      id
+      title
+      router
+    }
+    menu {
+      id
+      title
+      router
+    }
+  }
+}
